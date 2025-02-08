@@ -31,6 +31,9 @@ app.use('/api/bookings', bookingRoutes);
 const paymentRoutes = require('./routes/paymentRoutes');
 app.use('/api/payments', paymentRoutes);
 
+const contactRoutes = require('./routes/contactRoutes');
+app.use('/api/contact', contactRoutes);
+
 // Sample route
 app.get('/', (req, res) => { 
     res.send('Welcome to the Studio Web App Backend!');

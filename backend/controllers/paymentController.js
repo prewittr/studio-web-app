@@ -15,6 +15,7 @@ exports.createPaymentIntent = async (req, res) => {
       amount,         // e.g., 1000 for $10.00 if currency is USD
       currency,       // e.g., 'usd'
       description,    // Optional: description of the transaction
+      payment_method_types: ['card']  // Specify the payment method type(s)
     });
 
     // Respond with the client secret to complete the payment on the frontend
