@@ -30,7 +30,6 @@ exports.register = async (req, res) => {
       firstName,
       lastName,
       email,
-      address,
       role: 'member'
     });
 

@@ -1,122 +1,217 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap');
+
 .member-dashboard {
-    padding: 80px 20px 40px; /* Added top padding to account for a fixed navbar if any */
-    max-width: 900px;
-    margin: 0 auto;
-    font-family: 'Montserrat', sans-serif;
-    color: #333;
+  padding: 100px 20px 40px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: 'Montserrat', sans-serif;
+  background: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  color: #333;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #fff;
+}
+
+.dashboard-header .header-content h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8em;
+  margin-bottom: 10px;
+}
+
+.dashboard-header .header-content p {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.dashboard-nav {
+  margin-top: 10px;
+}
+
+.dashboard-nav .profile-link {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.1em;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.dashboard-nav .profile-link:hover {
+  color: #e0f7fa;
+}
+
+/* Dashboard Actions */
+.dashboard-actions {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.book-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.3s ease;
+}
+
+.book-btn:hover {
+  background: linear-gradient(135deg, #0056b3, #0088cc);
+}
+
+/* Sessions Section */
+.sessions-section {
+  margin-top: 20px;
+}
+
+.sessions-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4em;
+  margin-bottom: 20px;
+  color: #2d2d2d;
+  text-align: center;
+}
+
+/* Session List & Items */
+.session-list {
+  list-style: none;
+  padding: 0;
+}
+
+.session-item {
+  background: #fff;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.session-item:hover {
+  transform: translateY(-3px);
+}
+
+.session-info {
+  margin-bottom: 10px;
+}
+
+.session-type {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #2d2d2d;
+}
+
+.session-date {
+  margin-bottom: 5px;
+  color: #777;
+}
+
+.session-extras p {
+  margin: 2px 0;
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Session Actions */
+.session-actions {
+  text-align: right;
+}
+
+.edit-btn,
+.save-edit-btn,
+.cancel-edit-btn,
+.cancel-session-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-left: 5px;
+}
+
+.edit-btn {
+  background: #007bff;
+  color: #fff;
+}
+
+.edit-btn:hover {
+  background: #0056b3;
+}
+
+.save-edit-btn {
+  background: #28a745;
+  color: #fff;
+}
+
+.save-edit-btn:hover {
+  background: #1e7e34;
+}
+
+.cancel-edit-btn {
+  background: #ffc107;
+  color: #333;
+}
+
+.cancel-edit-btn:hover {
+  background: #e0a800;
+}
+
+.cancel-session-btn {
+  background: #dc3545;
+  color: #fff;
+}
+
+.cancel-session-btn:hover {
+  background: #c82333;
+}
+
+/* Inline edit form styling */
+.edit-session-form {
+  background: #f0f8ff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.edit-session-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.95em;
+  color: #333;
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .dashboard-header .header-content h1 {
+    font-size: 2.2em;
   }
-  
-  /* Dashboard Header */
-  .dashboard-header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  
-  .dashboard-header h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-  }
-  
-  .dashboard-header p {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-  }
-  
-  /* Navigation within the Dashboard Header */
-  .dashboard-nav {
-    margin-top: 10px;
-  }
-  
-  .dashboard-nav .profile-link {
-    text-decoration: none;
-    color: #007bff;
-    font-size: 1.1em;
-    font-weight: 600;
-    transition: color 0.3s ease;
-  }
-  
-  .dashboard-nav .profile-link:hover {
-    color: #0056b3;
-  }
-  
-  /* Dashboard Actions */
-  .dashboard-actions {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  .book-btn {
-    padding: 12px 24px;
-    background: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-  }
-  
-  .book-btn:hover {
-    background: #0056b3;
-  }
-  
-  /* Session List */
-  .session-list {
-    list-style: none;
-    padding: 0;
-  }
-  
+  .dashboard-header .header-content p,
+  .dashboard-nav .profile-link,
+  .book-btn,
   .session-item {
-    background: #fff;
-    margin: 10px 0;
-    padding: 15px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .session-type {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .session-date {
-    margin-bottom: 5px;
-    color: #777;
-  }
-  
-  .session-extras p {
-    margin: 2px 0;
     font-size: 0.9em;
-    color: #555;
   }
-  
-  /* Cancel Button */
-  .cancel-btn {
-    background: #dc3545;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
+  .sessions-section h2 {
+    font-size: 2em;
   }
-  
-  .cancel-btn:hover {
-    background: #c82333;
-  }
-  
-  /* Responsive adjustments if needed */
-  @media (max-width: 480px) {
-    .dashboard-header h1 {
-      font-size: 2em;
-    }
-    .dashboard-header p, 
-    .dashboard-nav .profile-link,
-    .book-btn,
-    .session-item {
-      font-size: 0.9em;
-    }
-  }
-  
+}

@@ -19,6 +19,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true, // Required field
   },
+  preferredName: {
+    type: String,
+  },
   email: {
     type: String,
     required: true, // Required field
@@ -26,11 +29,16 @@ const UserSchema = new mongoose.Schema({
     trim: true,
   },
   address: {
-    type: String,
+    street: { type: String },
+    city: { type: String },
+    state: { type: String },
+    zip: { type: String },
+    country: { type: String },
   },
   birthday: {
     type: Date,
   },
+  profilePicture: { type: String }, // Will store Base64 data or a URL
   role: {
     type: String,
     enum: ['member', 'staff', 'admin'],

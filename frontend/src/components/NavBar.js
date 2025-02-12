@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './NavBar.css';
 
 const NavBar = ({ token, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -11,6 +12,12 @@ const NavBar = ({ token, onLogout }) => {
 
   const handleLinkClick = () => {
     setIsOpen(false);
+  };
+
+  // When logout is triggered, call the onLogout callback and navigate to the landing page ("/")
+  const handleLogout = () => {
+    onLogout(); // This should remove the token and reset auth state in your parent component
+    navigate("/"); // Redirect to the landing page
   };
 
   return (
@@ -22,10 +29,10 @@ const NavBar = ({ token, onLogout }) => {
         <Link to="/" onClick={handleLinkClick}>Home</Link>
         <Link to="/features" onClick={handleLinkClick}>Features</Link>
         <Link to="/contact" onClick={handleLinkClick}>Contact</Link>
-        { token ? (
+        {token ? (
           <>
             <Link to="/member" onClick={handleLinkClick}>Dashboard</Link>
-            <button className="logout-btn" onClick={() => { onLogout(); handleLinkClick(); }}>
+            <button className="logout-btn" onClick={handleLogout}>
               Logout
             </button>
           </>

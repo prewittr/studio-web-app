@@ -7,6 +7,10 @@ const connectDB = require('./config/db');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Increase the request body size limit
+app.use(express.json({ limit: '10mb' }));  // adjust the limit as needed
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
 // Connect to the database
 connectDB();
 
@@ -54,6 +58,10 @@ app.use('/api/profile', profileRoutes);
 // Suite Assignment Router
 const assignmentsRoutes = require('./routes/assignmentsRoutes');
 app.use('/api/assignments', assignmentsRoutes);
+
+// Upload Routes (Profile Pics)
+const uploadRoutes = require('./routes/uploadRoutes');
+app.use('/api/upload', uploadRoutes);
 
 
 

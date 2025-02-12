@@ -4,16 +4,23 @@ import './MemberProfile.css';
 
 const MemberProfile = () => {
   const [profile, setProfile] = useState({
+    firstName: '',
+    lastName: '',
     preferredName: '',
-    address: '',
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: '',
     birthday: '',
-    paymentMethod: '', // This can be a placeholder string or a token ID, etc.
-    // You can add other preference fields here
+    profilePicture: ''
   });
+  const [profilePicFile, setProfilePicFile] = useState(null);
+  const [profilePicPreview, setProfilePicPreview] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  // Fetch the current profile data
+  // Fetch the current profile data when the component mounts
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -21,14 +28,20 @@ const MemberProfile = () => {
         const response = await axios.get('http://localhost:5000/api/profile', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        // Assuming the API returns a user object with these fields
+        const data = response.data;
         setProfile({
-          preferredName: response.data.preferredName || '',
-          address: response.data.address || '',
-          birthday: response.data.birthday ? response.data.birthday.split('T')[0] : '',
-          paymentMethod: response.data.paymentMethod || ''
-          // add other fields as needed
+          firstName: data.firstName || '',
+          lastName: data.lastName || '',
+          preferredName: data.preferredName || '',
+          street: data.address?.street || '',
+          city: data.address?.city || '',
+          state: data.address?.state || '',
+          zip: data.address?.zip || '',
+          country: data.address?.country || '',
+          birthday: data.birthday ? data.birthday.split('T')[0] : '',
+          profilePicture: data.profilePicture || ''
         });
+        setProfilePicPreview(data.profilePicture || '');
       } catch (err) {
         console.error(err);
         setError('Failed to load profile.');
@@ -38,22 +51,53 @@ const MemberProfile = () => {
     fetchProfile();
   }, []);
 
+  // Update form fields on change
   const handleChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
+  // Handle profile picture file selection
+  const handleProfilePicChange = (e) => {
+    const file = e.target.files[0];
+    setProfilePicFile(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePicPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // On form submission, update the profile
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
     setError('');
     try {
       const token = localStorage.getItem('jwtToken');
-      const response = await axios.put('http://localhost:5000/api/profile', profile, {
+      let updatedProfile = { ...profile };
+
+      // If a new profile picture is selected, upload it first.
+      if (profilePicFile) {
+        const formData = new FormData();
+        formData.append('file', profilePicFile);
+        const uploadResponse = await axios.post('http://localhost:5000/api/upload', formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        // Set the returned URL as the new profile picture
+        updatedProfile.profilePicture = uploadResponse.data.url;
+      }
+
+      const response = await axios.put('http://localhost:5000/api/profile', updatedProfile, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage(response.data.message || 'Profile updated successfully!');
     } catch (err) {
-      console.error(err);
+      console.error('Update profile error:', err);
       setError(err.response?.data?.message || 'Failed to update profile.');
     }
   };
@@ -64,48 +108,119 @@ const MemberProfile = () => {
       {error && <p className="error-message">{error}</p>}
       {message && <p className="success-message">{message}</p>}
       <form onSubmit={handleSubmit} className="profile-form">
+        {/* Profile Picture Section at the Top */}
+        <div className="profile-pic-section">
+          <label htmlFor="profilePicture">Profile Picture</label>
+          <input 
+            type="file" 
+            id="profilePicture" 
+            name="file"  // Must be named "file" to work with multer
+            accept="image/*"
+            onChange={handleProfilePicChange}
+          />
+          {profilePicPreview && (
+            <div className="profile-pic-preview">
+              <img src={profilePicPreview} alt="Profile Preview" />
+            </div>
+          )}
+        </div>
+        {/* Basic Information */}
+        <div className="form-group">
+          <label htmlFor="firstName">First Name</label>
+          <input 
+            type="text" 
+            id="firstName" 
+            name="firstName" 
+            value={profile.firstName} 
+            onChange={handleChange} 
+            required 
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="lastName">Last Name</label>
+          <input 
+            type="text" 
+            id="lastName" 
+            name="lastName" 
+            value={profile.lastName} 
+            onChange={handleChange} 
+            required 
+          />
+        </div>
         <div className="form-group">
           <label htmlFor="preferredName">Preferred Name</label>
-          <input
-            type="text"
-            id="preferredName"
-            name="preferredName"
-            value={profile.preferredName}
-            onChange={handleChange}
+          <input 
+            type="text" 
+            id="preferredName" 
+            name="preferredName" 
+            value={profile.preferredName} 
+            onChange={handleChange} 
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="address">Address</label>
-          <input
-            type="text"
-            id="address"
-            name="address"
-            value={profile.address}
-            onChange={handleChange}
-          />
-        </div>
+        {/* Address Fieldset */}
+        <fieldset className="address-fieldset">
+          <legend>Address</legend>
+          <div className="form-group">
+            <label htmlFor="street">Street</label>
+            <input 
+              type="text" 
+              id="street" 
+              name="street" 
+              value={profile.street} 
+              onChange={handleChange} 
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="city">City</label>
+            <input 
+              type="text" 
+              id="city" 
+              name="city" 
+              value={profile.city} 
+              onChange={handleChange} 
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="state">State</label>
+            <input 
+              type="text" 
+              id="state" 
+              name="state" 
+              value={profile.state} 
+              onChange={handleChange} 
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="zip">Zip Code</label>
+            <input 
+              type="text" 
+              id="zip" 
+              name="zip" 
+              value={profile.zip} 
+              onChange={handleChange} 
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="country">Country</label>
+            <input 
+              type="text" 
+              id="country" 
+              name="country" 
+              value={profile.country} 
+              onChange={handleChange} 
+            />
+          </div>
+        </fieldset>
         <div className="form-group">
           <label htmlFor="birthday">Birthdate</label>
-          <input
-            type="date"
-            id="birthday"
-            name="birthday"
-            value={profile.birthday}
-            onChange={handleChange}
+          <input 
+            type="date" 
+            id="birthday" 
+            name="birthday" 
+            value={profile.birthday} 
+            onChange={handleChange} 
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="paymentMethod">Saved Payment Method</label>
-          <input
-            type="text"
-            id="paymentMethod"
-            name="paymentMethod"
-            value={profile.paymentMethod}
-            onChange={handleChange}
-            placeholder="e.g., Card ending in 1234"
-          />
-        </div>
-        {/* Add more fields for other preferences if needed */}
         <button type="submit" className="save-btn">Save Profile</button>
       </form>
     </div>
