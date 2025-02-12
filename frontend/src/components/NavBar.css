@@ -1,0 +1,90 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #00008B;
+  padding: 0.5rem 1rem;
+  color: #d9b56e;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.navbar__logo a {
+  text-decoration: none;
+  color: #d9b56e;
+  font-size: 1.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navbar__links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;  /* Allow links to wrap to a new line if needed */
+}
+
+.navbar__links a {
+  text-decoration: none;
+  color: #d9b56e;
+  white-space: nowrap;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #d9b56e;
+  cursor: pointer;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.navbar__toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.navbar__toggle .bar {
+  width: 25px;
+  height: 3px;
+  background: #d9b56e;
+  margin: 4px 0;
+  transition: 0.3s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar__links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #333;
+    flex-direction: column;
+    align-items: center;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+  }
+  .navbar__links.open {
+    max-height: 300px;
+  }
+  .navbar__toggle {
+    display: flex;
+  }
+}
+
+/* Optional: Further reduce font-size on very small screens */
+@media (max-width: 480px) {
+  .navbar__logo a {
+    font-size: 1.2rem;
+  }
+  .navbar__links a, .logout-btn {
+    font-size: 0.9rem;
+  }
+}

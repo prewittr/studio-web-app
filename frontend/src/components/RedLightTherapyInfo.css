@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap');
+
+.redlight-info {
+  width: 100%;
+  min-height: 100vh;
+  /* Full-page background image; update the image path as needed */
+  background: url('../images/redbed3.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+  padding: 60px 20px;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Gradient overlay to soften the background image */
+.redlight-info::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255,230,230,0.8), rgba(255,200,200,0.8));
+  z-index: 0;
+}
+
+/* Content wrapper for centering and readability */
+.redlight-info > .content-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.95);
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Header styling scoped to redlight-info */
+.redlight-info header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.redlight-info header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3em;
+  margin-bottom: 10px;
+  color: #e63946;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.redlight-info header p {
+  font-size: 1.3em;
+  color: #555;
+}
+
+/* Section styling scoped to redlight-info */
+.redlight-info section {
+  margin-bottom: 40px;
+}
+
+.redlight-info section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #e63946;
+  border-bottom: 3px solid #e63946;
+  padding-bottom: 10px;
+}
+
+.redlight-info section p {
+  font-size: 1.1em;
+  color: #4a4a4a;
+  margin-bottom: 20px;
+}
+
+.redlight-info section ul {
+  list-style-type: disc;
+  margin-left: 30px;
+  font-size: 1.1em;
+  color: #4a4a4a;
+}
+
+.redlight-info section ul li {
+  margin-bottom: 10px;
+}
+
+/* Footer styling scoped to redlight-info */
+.redlight-info footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+  color: #777;
+  font-size: 0.9em;
+}
+
+.redlight-info footer a {
+  color: #e63946;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.redlight-info footer a:hover {
+  text-decoration: underline;
+  color: #a62836;
+}
+
+/* Responsive adjustments for mobile devices */
+@media (max-width: 600px) {
+  .redlight-info > .content-wrapper {
+    padding: 20px;
+    margin: 0 10px;
+  }
+  
+  .redlight-info header h1 {
+    font-size: 2.5em;
+  }
+  
+  .redlight-info header p,
+  .redlight-info section p,
+  .redlight-info section ul,
+  .redlight-info section ul li {
+    font-size: 1em;
+  }
+  
+  .redlight-info section h2 {
+    font-size: 2em;
+  }
+}

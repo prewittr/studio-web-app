@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './Contact.css';
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -19,7 +20,6 @@ function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Assuming your backend is running on localhost:5000
       const res = await axios.post('http://localhost:5000/api/contact', formData, {
         headers: { 'Content-Type': 'application/json' }
       });
@@ -32,25 +32,11 @@ function Contact() {
   };
 
   return (
-    <div>
+    <div className="contact-page">
       <h2>Contact Us</h2>
-      
-      {/* Google Maps Embed Example */}
-      <div style={{ width: '100%', height: '400px', marginBottom: '20px' }}>
-        <iframe
-          title="Studio Location"
-          width="100%"
-          height="100%"
-          frameBorder="0"
-          style={{ border: 0 }}
-          // Replace the src below with your actual Google Maps embed link.
-          src="https://www.google.com/maps/embed/v1/place?q=Your+Studio+Address&key=AIzaSyBJqofS7Tz2qhO2lxaVorx7-WxxCkwGLGw"
-          allowFullScreen
-        ></iframe>
-      </div>
-      
-      <form onSubmit={handleSubmit}>
-        <div>
+      <p>Please fill out the form below and we will get back to you as soon as possible.</p>
+      <form className="contact-form" onSubmit={handleSubmit}>
+        <div className="form-group">
           <label>Name:</label>
           <input 
             type="text" 
@@ -60,7 +46,7 @@ function Contact() {
             required 
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Email:</label>
           <input 
             type="email" 
@@ -70,7 +56,7 @@ function Contact() {
             required 
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Message:</label>
           <textarea 
             name="message" 
@@ -79,9 +65,9 @@ function Contact() {
             required
           ></textarea>
         </div>
-        <button type="submit">Submit Inquiry</button>
+        <button type="submit" className="submit-btn">Submit Inquiry</button>
       </form>
-      {responseMessage && <p>{responseMessage}</p>}
+      {responseMessage && <p className="response-message">{responseMessage}</p>}
     </div>
   );
 }

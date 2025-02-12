@@ -1,0 +1,15 @@
+.booking-calendar {
+    max-width: 900px;
+    margin: 20px auto;
+  }
+  
+  /* Custom event styling to show only a short label */
+  .fc-event-custom {
+    font-size: 0.9em;
+    padding: 2px 4px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 2px;
+    text-align: center;
+  }
+  

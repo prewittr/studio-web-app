@@ -23,7 +23,7 @@ app.use('/api/auth', authRoutes);
 const protectedRoutes = require('./routes/protectedRoutes');
 app.use('/api/protected', protectedRoutes);
 
-// Booking routes
+// Booking routes (THIS IS DEAD)
 const bookingRoutes = require('./routes/bookingRoutes');
 app.use('/api/bookings', bookingRoutes);
 
@@ -31,12 +31,35 @@ app.use('/api/bookings', bookingRoutes);
 const paymentRoutes = require('./routes/paymentRoutes');
 app.use('/api/payments', paymentRoutes);
 
+// Contact Routes
 const contactRoutes = require('./routes/contactRoutes');
 app.use('/api/contact', contactRoutes);
 
+//Member Routes
+const membersRoutes = require('./routes/membersRoutes');
+app.use('/api/members', membersRoutes);
+
+// Session Booking Routes
+const sessionsRoutes = require('./routes/sessionsRoutes');
+app.use('/api/sessions', sessionsRoutes);
+
+// Staff routes
+const staffRoutes = require('./routes/staffRoutes');
+app.use('/api/staff', staffRoutes);
+
+// Profile Routes
+const profileRoutes = require('./routes/profileRoutes');
+app.use('/api/profile', profileRoutes);
+
+// Suite Assignment Routes
+const assignmentsRoutes = require('./routes/assignmentsRoutes');
+app.use('/api/assignments', assignmentsRoutes);
+
+
+
 // Sample route
 app.get('/', (req, res) => { 
-    res.send('Welcome to the Studio Web App Backend!');
+    res.send('Welcome to Diviti Adora Studio Web App Backend!');
   });
   
 app.listen(PORT, () => {

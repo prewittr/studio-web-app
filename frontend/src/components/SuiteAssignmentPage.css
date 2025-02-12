@@ -1,0 +1,80 @@
+.suite-assignment-page {
+    padding: 40px;
+    text-align: center;
+    background: #f9f9f9;
+    min-height: 100vh;
+  }
+  
+  .suite-assignment-page h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .time-picker {
+    margin-bottom: 20px;
+  }
+  
+  .assignment-grid {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    margin-bottom: 30px;
+  }
+  
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .hallway {
+    width: 80px;
+    font-weight: bold;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 2px solid #ccc;
+    border-right: 2px solid #ccc;
+  }
+  
+  .suite-cell {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    width: 180px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .suite-cell.handicap {
+    border-color: #28a745;
+    background: #d4edda;
+  }
+  
+  .suite-header {
+    background: #007bff;
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px 4px 0 0;
+    font-weight: bold;
+    font-size: 0.9em;
+  }
+  
+  .suite-cell.handicap .suite-header {
+    background: #28a745;
+  }
+  
+  .suite-content {
+    padding: 5px;
+    font-size: 0.85em;
+    color: #333;
+    text-align: left;
+  }
+  

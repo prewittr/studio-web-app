@@ -1,0 +1,61 @@
+.staff-dashboard {
+    padding: 40px;
+    background: #eef2f7;
+    min-height: 100vh;
+    text-align: center;
+  }
+  
+  .staff-dashboard h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .staff-dashboard h2 {
+    font-size: 1.8em;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  .dashboard-actions {
+    margin: 20px 0;
+  }
+  
+  .assignment-btn {
+    background: #28a745;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-bottom: 20px;
+  }
+  
+  .assignment-btn:hover {
+    background: #218838;
+  }
+  
+  .booking-table {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    border-collapse: collapse;
+  }
+  
+  .booking-table th,
+  .booking-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+  }
+  
+  .booking-table th {
+    background: #007bff;
+    color: #fff;
+    text-align: left;
+  }
+  
+  .booking-table tr:nth-child(even) td {
+    background: #f2f2f2;
+  }
+  
