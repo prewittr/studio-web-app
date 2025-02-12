@@ -51,7 +51,7 @@ app.use('/api/staff', staffRoutes);
 const profileRoutes = require('./routes/profileRoutes');
 app.use('/api/profile', profileRoutes);
 
-// Suite Assignment Routes
+// Suite Assignment Router
 const assignmentsRoutes = require('./routes/assignmentsRoutes');
 app.use('/api/assignments', assignmentsRoutes);
 
