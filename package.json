@@ -2,6 +2,7 @@
   "dependencies": {
     "nodemailer": "^6.10.0",
     "react-router-dom": "^7.1.5",
+    "react-scripts": "^5.0.1",
     "stripe": "^17.6.0"
   },
   "name": "studio-web-app",
