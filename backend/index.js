@@ -8,16 +8,14 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Increase the request body size limit
-app.use(express.json({ limit: '10mb' }));  // adjust the limit as needed
+app.use(express.json({ limit: '10mb' }));  // custom limit
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Connect to the database
 connectDB();
 
-// Middleware
-app.use(express.json());
+// Use CORS middleware
 app.use(cors());
-
 
 // Import auth routes
 const authRoutes = require('./routes/authRoutes');
@@ -39,7 +37,7 @@ app.use('/api/payments', paymentRoutes);
 const contactRoutes = require('./routes/contactRoutes');
 app.use('/api/contact', contactRoutes);
 
-//Member Routes
+// Member Routes
 const membersRoutes = require('./routes/membersRoutes');
 app.use('/api/members', membersRoutes);
 
@@ -63,12 +61,10 @@ app.use('/api/assignments', assignmentsRoutes);
 const uploadRoutes = require('./routes/uploadRoutes');
 app.use('/api/upload', uploadRoutes);
 
-
-
 // Sample route
 app.get('/', (req, res) => { 
     res.send('Welcome to Diviti Adora Studio Web App Backend!');
-  });
+});
   
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

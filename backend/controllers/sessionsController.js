@@ -206,47 +206,47 @@ exports.getAvailability = async (req, res) => {
       const { blockStart, blockEnd } = getTimeBlock(newStart);
       let suiteAssignment = null;
       if (sessionType === 'redlight') {
-        // For redlight sessions, capacity is 4 per hour (2 per redlight bed, one per half-hour segment).
-        
-        // Determine the half-hour segment for the new booking:
-        // If the appointment minutes are less than 30, segment 1; otherwise, segment 2.
-        const segment = newStart.getMinutes() < 30 ? 1 : 2;
-      
-        // Fetch all existing redlight bookings for this hour (time block)
-        const existingRedlight = await SessionBooking.find({
-          sessionType: 'redlight',
-          status: { $ne: 'cancelled' },
-          appointmentDate: { $gte: blockStart, $lt: blockEnd }
-        });
-      
-        // For each redlight suite (number 1 and 2), count how many bookings are in the same segment.
-        const assignedRed1 = existingRedlight.filter(b => {
-          if (b.suiteAssignment && b.suiteAssignment.number === 1) {
-            const bSegment = new Date(b.appointmentDate).getMinutes() < 30 ? 1 : 2;
-            return bSegment === segment;
-          }
-          return false;
-        }).length;
-        
-        const assignedRed2 = existingRedlight.filter(b => {
-          if (b.suiteAssignment && b.suiteAssignment.number === 2) {
-            const bSegment = new Date(b.appointmentDate).getMinutes() < 30 ? 1 : 2;
-            return bSegment === segment;
-          }
-          return false;
-        }).length;
-      
-        if (assignedRed1 < 1) {
-          suiteAssignment = { type: 'redlight', number: 1 };
-        } else if (assignedRed2 < 1) {
-          suiteAssignment = { type: 'redlight', number: 2 };
-        } else {
-          return res.status(400).json({ 
-            message: 'Redlight bed capacity for this hour has been reached for the selected half-hour segment.' 
-          });
-        }
-      }
-      else if (sessionType === 'infrared') {
+  // For redlight sessions, capacity is 4 per hour (2 per redlight bed, one per half-hour segment).
+  
+  // Determine the half-hour segment for the new booking:
+  // If the appointment minutes are less than 30, segment 1; otherwise, segment 2.
+  const segment = newStart.getMinutes() < 30 ? 1 : 2;
+
+  // Fetch all existing redlight bookings for this hour (time block)
+  const existingRedlight = await SessionBooking.find({
+    sessionType: 'redlight',
+    status: { $ne: 'cancelled' },
+    appointmentDate: { $gte: blockStart, $lt: blockEnd }
+  });
+
+  // For each redlight suite (number 1 and 2), count how many bookings are in the same segment.
+  const assignedRed1 = existingRedlight.filter(b => {
+    if (b.suiteAssignment && b.suiteAssignment.number === 1) {
+      const bSegment = new Date(b.appointmentDate).getMinutes() < 30 ? 1 : 2;
+      return bSegment === segment;
+    }
+    return false;
+  }).length;
+  
+  const assignedRed2 = existingRedlight.filter(b => {
+    if (b.suiteAssignment && b.suiteAssignment.number === 2) {
+      const bSegment = new Date(b.appointmentDate).getMinutes() < 30 ? 1 : 2;
+      return bSegment === segment;
+    }
+    return false;
+  }).length;
+
+  if (assignedRed1 < 1) {
+    suiteAssignment = { type: 'redlight', number: 1 };
+  } else if (assignedRed2 < 1) {
+    suiteAssignment = { type: 'redlight', number: 2 };
+  } else {
+    return res.status(400).json({ 
+      message: 'Redlight bed capacity for this hour has been reached for the selected half-hour segment.' 
+    });
+  }
+}
+else if (sessionType === 'infrared') {
         // For infrared, capacity is 8 per hour.
         if (req.user && req.user.handicap) {
           // Handicap users must get suite 4.
@@ -300,6 +300,39 @@ exports.getAvailability = async (req, res) => {
     } catch (error) {
       console.error('Error booking session:', error);
       res.status(500).json({ message: 'Server error while booking session.' });
+    }
+  };
+
+  exports.updateSession = async (req, res) => {
+    try {
+      const sessionId = req.params.id;
+      const updates = req.body; // Expecting an object with fields like { addGuest, aromatherapy, halotherapy }
+  
+      // Optionally, you may want to verify that the session belongs to the current user.
+      // For example:
+      const session = await SessionBooking.findById(sessionId);
+      if (!session || session.user.toString() !== req.user.id) {
+        return res.status(403).json({ message: 'Not authorized to update this session.' });
+       }
+  
+      // Update the session with new data. The { new: true } option returns the updated document.
+      const updatedSession = await SessionBooking.findByIdAndUpdate(
+        sessionId,
+        updates,
+        { new: true, runValidators: true }
+      );
+  
+      if (!updatedSession) {
+        return res.status(404).json({ message: 'Session not found.' });
+      }
+  
+      res.json({
+        message: 'Session updated successfully!',
+        updatedSession,
+      });
+    } catch (error) {
+      console.error('Error updating session:', error);
+      res.status(500).json({ message: 'Server error updating session.' });
     }
   };
   
