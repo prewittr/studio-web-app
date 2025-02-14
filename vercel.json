@@ -1,7 +1,7 @@
 {
     "version": 2,
     "builds": [
-      { "src": "frontend", "use": "@vercel/create-react-app" }
+      { "src": "frontend", "use": "@vercel/next" }
     ],
     "routes": [
       { "src": "/(.*)", "dest": "/frontend/$1" }
