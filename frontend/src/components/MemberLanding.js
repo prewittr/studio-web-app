@@ -9,7 +9,7 @@ const MemberLanding = () => {
   const [loading, setLoading] = useState(true);
   const [editingSessionId, setEditingSessionId] = useState(null);
   const [editingSessionData, setEditingSessionData] = useState({});
-  const navigate = useNavigate();
+  /*const navigate = useNavigate();*/
   const token = localStorage.getItem('jwtToken');
 
   // Fetch active sessions from the backend

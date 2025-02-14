@@ -16,7 +16,7 @@ const getOperatingHours = (date) => {
   }
 };
 
-const generateTimeSlotsForDay = (day, sessionType) => {
+/*const generateTimeSlotsForDay = (day, sessionType) => {
   const slots = [];
   const { startHour, endHour } = getOperatingHours(day);
   let slotDuration, interval;
@@ -40,7 +40,7 @@ const generateTimeSlotsForDay = (day, sessionType) => {
     current = new Date(current.getTime() + interval * 60000);
   }
   return slots;
-};
+};*/
 
 const BookSession = () => {
   const [sessionType, setSessionType] = useState('infrared'); // default infrared
