@@ -1,4 +1,4 @@
-//const serverless = require('serverless-http');
+const serverless = require('serverless-http');
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -52,6 +52,5 @@ app.use('/api/profile', profileRoutes);
 app.get('/', (req, res) => {
   res.send('Welcome to Diviti Adora Studio Web App Backend!');
 });
-module.exports = app;
 
-//module.exports = serverless(app);
+module.exports = serverless(app);
