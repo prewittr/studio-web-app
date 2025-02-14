@@ -10,6 +10,21 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 // Use CORS so that your API can be accessed from your frontend.
 app.use(cors());
 
+
+// Import and mount routes from backend/routes/index.js
+const backendRoutes = require('../backend/routes'); // Adjust the path if needed
+app.use('/api/v1', backendRoutes);
+
+// Serve static assets from the frontend build directory in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../../frontend/build')));
+
+  // Redirect all unmatched routes to the React app's index.html
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../frontend/build/index.html'));
+  });
+}
+
 // Mount routes from the backend folder
 const authRoutes = require('../backend/routes/authRoutes');
 app.use('/api/auth', authRoutes);
