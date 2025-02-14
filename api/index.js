@@ -44,9 +44,6 @@ app.use('/api/assignments', assignmentsRoutes);
 const uploadRoutes = require('../backend/routes/uploadRoutes');
 app.use('/api/upload', uploadRoutes);
 
-const profileRoutes = require('../backend/routes/profileRoutes');
-app.use('/api/profile', profileRoutes);
-
 
 // Default route
 app.get('/', (req, res) => {
