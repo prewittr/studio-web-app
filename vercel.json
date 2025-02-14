@@ -4,8 +4,8 @@
       { "src": "frontend/package.json", "use": "@vercel/static-build" },
       { "src": "api/index.js", "use": "@vercel/node" }
     ],
-    "routes": [
-      { "src": "/api/*.js", "dest": "/api/index.js" },
+    "functions": [
+      { "src": "/api/(.*)", "dest": "/api/index.js" },
       { "src": "/(.*)", "dest": "/frontend/build/$1" }
     ]
   }
