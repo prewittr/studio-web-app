@@ -1,9 +1,12 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/static-build"
-    }
-  ]
-}
+    "version": 2,
+    "builds": [
+      { "src": "frontend", "use": "@vercel/next" }, 
+      { "src": "api", "use": "@vercel/node" }
+      
+    ],
+    "routes": [
+      { "src": "/(.*)", "dest": "/frontend/$1" }, // Serve frontend from root
+      { "src": "/api/(.*)", "dest": "/api/$1" }
+    ]
+  }
