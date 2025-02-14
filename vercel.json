@@ -6,7 +6,7 @@
       
     ],
     "routes": [
-      { "src": "/(.*)", "dest": "/frontend/$1" }, // Serve frontend from root
+      { "src": "/(.*)", "dest": "/frontend/$1" }, 
       { "src": "/api/(.*)", "dest": "/api/$1" }
     ]
   }
