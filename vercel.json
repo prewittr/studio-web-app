@@ -1,14 +1,16 @@
 {
-
     "version": 2,
-  
-    "build": {
-  
-      "command": "npm run build",
-  
-      "outputDirectory": "build"
-  
-    }
-  
+    "builds": [
+      {
+        "src": "frontend/package.json",
+        "use": "@vercel/static-build"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "frontend/build/$1"
+      }
+    ]
   }
   
