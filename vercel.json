@@ -1,9 +1,13 @@
 {
     "version": 2,
     "builds": [
-      { "src": "frontend", "use": "@vercel/create-react-app" }
+      { "src": "frontend", "use": "@vercel/create-react-app" },
+      { "src": "api", "use": "@vercel/node" },
+      { "src": "backend", "use": "@vercel/node" }
     ],
     "routes": [
-      { "src": "/(.*)", "dest": "/frontend/$1" }
+      { "src": "/(.*)", "dest": "/frontend/$1" }, 
+      { "src": "/api/(.*)", "dest": "/api/$1" }, 
+      { "src": "/backend/(.*)", "dest": "/backend/$1" } 
     ]
   }
