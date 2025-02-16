@@ -24,7 +24,6 @@ const BookSession = () => {
     const fetchAvailability = async () => {
       try {
         const token = localStorage.getItem('jwtToken');
-        // Format selectedDay as YYYY-MM-DD
         const year = selectedDay.getFullYear();
         const month = String(selectedDay.getMonth() + 1).padStart(2, '0');
         const day = String(selectedDay.getDate()).padStart(2, '0');
@@ -36,23 +35,15 @@ const BookSession = () => {
         });
         const slots = response.data.availableSlots.map((slot) => new Date(slot));
         setAvailableSlots(slots);
-        // Reset selected slot if day or session type changes.
+        // Clear any previously selected slot since the day or session type has changed.
         setAppointmentDate(null);
       } catch (err) {
         console.error('Error fetching availability:', err.response ? err.response.data : err);
         setError(err.response?.data?.message || 'Error fetching availability');
       }
     };
-
     fetchAvailability();
   }, [sessionType, selectedDay]);
-
-  // Automatically set the appointmentDate to the first available slot if not already set.
-  useEffect(() => {
-    if (availableSlots.length > 0 && !appointmentDate) {
-      setAppointmentDate(availableSlots[0]);
-    }
-  }, [availableSlots, appointmentDate]);
 
   // Fetch available suites when sessionType, selectedDay, or appointmentDate changes.
   useEffect(() => {
@@ -63,12 +54,12 @@ const BookSession = () => {
         const month = String(selectedDay.getMonth() + 1).padStart(2, '0');
         const day = String(selectedDay.getDate()).padStart(2, '0');
         const dateString = `${year}-${month}-${day}`;
-        // Pass appointmentDate (if selected) as the time parameter to narrow down the time block
-        const timeParam = appointmentDate ? appointmentDate.toISOString() : undefined;
-        const endpoint =
-          sessionType === 'infrared'
-            ? 'http://localhost:5000/api/suites/sauna'
-            : 'http://localhost:5000/api/suites/redlight';
+        // Only fetch suites if a time slot is selected.
+        if (!appointmentDate) return;
+        const timeParam = appointmentDate.toISOString();
+        const endpoint = sessionType === 'infrared'
+          ? 'http://localhost:5000/api/suites/sauna'
+          : 'http://localhost:5000/api/suites/redlight';
         console.log('Fetching suites with date:', dateString, 'time:', timeParam, 'for sessionType:', sessionType);
         const response = await axios.get(endpoint, {
           headers: { Authorization: `Bearer ${token}` },
@@ -76,16 +67,13 @@ const BookSession = () => {
         });
         console.log('Suites response:', response.data);
         setAvailableSuites(response.data.suites || []);
-        setSelectedSuite(''); // Reset suite selection when day/session changes
+        setSelectedSuite('');
       } catch (err) {
         console.error('Error fetching available suites:', err.response ? err.response.data : err);
         setAvailableSuites([]);
       }
     };
-
-    if (appointmentDate) {
-      fetchSuites();
-    }
+    fetchSuites();
   }, [sessionType, selectedDay, appointmentDate]);
 
   const handleSubmit = async (e) => {
@@ -104,18 +92,16 @@ const BookSession = () => {
       setError('The selected time is in the past. Please choose a future time slot.');
       return;
     }
-      
     try {
       const token = localStorage.getItem('jwtToken');
       const bookingData = {
         sessionType,
         appointmentDate: appointmentDate.toISOString(),
-        suite: selectedSuite,
+        suite: Number(selectedSuite),
         addGuest,
         aromatherapy,
         halotherapy
       };
-
       const response = await axios.post(
         'http://localhost:5000/api/sessions/book',
         bookingData,
@@ -136,7 +122,7 @@ const BookSession = () => {
   return (
     <div className="book-session">
       <h2>Book a Session</h2>
-      
+
       <div className="form-group">
         <label htmlFor="sessionType">Session Type:</label>
         <select
@@ -144,7 +130,6 @@ const BookSession = () => {
           value={sessionType}
           onChange={(e) => {
             setSessionType(e.target.value);
-            // Reset suite and slot selections when session type changes
             setAvailableSlots([]);
             setAvailableSuites([]);
             setAppointmentDate(null);
@@ -182,9 +167,7 @@ const BookSession = () => {
               <button
                 type="button"
                 key={index}
-                className={`slot-btn ${
-                  appointmentDate && slot.getTime() === appointmentDate.getTime() ? 'selected' : ''
-                }`}
+                className={`slot-btn ${appointmentDate && slot.getTime() === appointmentDate.getTime() ? 'selected' : ''}`}
                 onClick={() => setAppointmentDate(slot)}
               >
                 {slot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
@@ -202,18 +185,18 @@ const BookSession = () => {
             Select {sessionType === 'infrared' ? 'Sauna Suite' : 'Red Light Bed Suite'}:
           </label>
           <select
-            id="suiteSelection"
-            value={selectedSuite}
-            onChange={(e) => setSelectedSuite(e.target.value)}
-            required
-          >
-            <option value="">-- Select a Suite --</option>
-            {availableSuites.map((suite) => (
-              <option key={suite.id} value={suite.suiteNumber}>
-                {suite.name} (Suite {suite.suiteNumber})
-              </option>
-            ))}
-          </select>
+  id="suiteSelection"
+  value={selectedSuite}
+  onChange={(e) => setSelectedSuite(e.target.value)}
+  required
+>
+  <option value="">-- Select a Suite --</option>
+  {availableSuites.map((suite) => (
+    <option key={suite.id} value={suite.suiteNumber}>
+      {suite.name} 
+    </option>
+  ))}
+</select>
         </div>
       ) : (
         <div className="form-group">
@@ -271,7 +254,7 @@ const BookSession = () => {
           Cancel
         </button>
       </div>
-      
+
       {message && <p className="success-message">{message}</p>}
       {error && <p className="error-message">{error}</p>}
     </div>
