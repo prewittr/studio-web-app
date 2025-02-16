@@ -1,24 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap');
 
+:root {
+  --primary: #F0EAD6;       /* Eggshell */
+  --secondary: #B28F61;     /* Muted Gold */
+  --tertiary: #D38D6A;      /* Warm Peach */
+  --accent1: #1F5C63;       /* Deep Teal */
+  --accent2: #A65D2F;       /* Rusty Copper */
+  --accent3: #2F6B74;       /* Dark Teal */
+}
+
+/* Member Dashboard Container */
 .member-dashboard {
-  padding: 100px 20px 40px;
+  padding: 140px 20px 40px; /* Extra top padding to clear the nav bar */
   max-width: 900px;
   margin: 0 auto;
   font-family: 'Montserrat', sans-serif;
-  background: #f7f7f7;
+  background: var(--primary); /* Eggshell */
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  color: #333;
+  color: var(--accent1);      /* Deep Teal for text */
 }
 
 /* Dashboard Header */
 .dashboard-header {
-  background: linear-gradient(135deg, #007bff, #00c6ff);
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
   padding: 20px;
   border-radius: 8px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   text-align: center;
-  color: #fff;
+  color: var(--accent1);
 }
 
 .dashboard-header .header-content h1 {
@@ -32,54 +42,64 @@
   margin-bottom: 10px;
 }
 
-.dashboard-nav {
-  margin-top: 10px;
+/* Tab Buttons (File Folder–like) */
+.tab-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  border-bottom: 2px solid var(--accent1);
 }
 
-.dashboard-nav .profile-link {
-  text-decoration: none;
-  color: #fff;
-  font-size: 1.1em;
-  font-weight: 600;
-  transition: color 0.3s ease;
+.tab-buttons button {
+  padding: 6px 12px;
+  border: 1px solid var(--accent1);
+  border-bottom: none;
+  background: var(--secondary);
+  color: var(--primary);
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  margin-left: 4px;
 }
 
-.dashboard-nav .profile-link:hover {
-  color: #e0f7fa;
+.tab-buttons button:first-child {
+  margin-left: auto;
 }
 
-/* Dashboard Actions */
-.dashboard-actions {
-  text-align: center;
-  margin-bottom: 30px;
+.tab-buttons button.active,
+.tab-buttons button:hover {
+  background: var(--accent1);
+  color: var(--primary);
 }
 
+/* Tab Content */
+.tab-content {
+  padding: 15px;
+  border: 1px solid var(--accent1);
+  border-top: none;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background: var(--primary);
+  margin-top: -2px;
+}
+
+/* Book Button */
 .book-btn {
   padding: 12px 24px;
-  background: linear-gradient(135deg, #007bff, #00c6ff);
-  color: #fff;
+  background: linear-gradient(135deg, var(--secondary), var(--tertiary));
+  color: var(--accent1);
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1em;
   transition: background 0.3s ease;
+  margin-bottom: 20px;
 }
 
 .book-btn:hover {
-  background: linear-gradient(135deg, #0056b3, #0088cc);
-}
-
-/* Sessions Section */
-.sessions-section {
-  margin-top: 20px;
-}
-
-.sessions-section h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.4em;
-  margin-bottom: 20px;
-  color: #2d2d2d;
-  text-align: center;
+  background: linear-gradient(135deg, var(--tertiary), var(--secondary));
 }
 
 /* Session List & Items */
@@ -89,14 +109,13 @@
 }
 
 .session-item {
-  background: #fff;
+  background: var(--tertiary);
   margin: 10px 0;
   padding: 15px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
   transition: transform 0.2s ease;
+  color: var(--accent1);
 }
 
 .session-item:hover {
@@ -110,21 +129,21 @@
 .session-type {
   font-weight: bold;
   margin-bottom: 5px;
-  color: #2d2d2d;
+  color: var(--accent1);
 }
 
 .session-date {
   margin-bottom: 5px;
-  color: #777;
+  color: var(--accent1);
 }
 
 .session-extras p {
   margin: 2px 0;
   font-size: 0.9em;
-  color: #555;
+  color: var(--accent1);
 }
 
-/* Session Actions */
+/* Session Actions & Inline Edit Form */
 .session-actions {
   text-align: right;
 }
@@ -143,12 +162,12 @@
 }
 
 .edit-btn {
-  background: #007bff;
-  color: #fff;
+  background: var(--accent1);
+  color: var(--primary);
 }
 
 .edit-btn:hover {
-  background: #0056b3;
+  background: var(--accent2);
 }
 
 .save-edit-btn {
@@ -161,12 +180,12 @@
 }
 
 .cancel-edit-btn {
-  background: #ffc107;
-  color: #333;
+  background: var(--accent2);
+  color: var(--primary);
 }
 
 .cancel-edit-btn:hover {
-  background: #e0a800;
+  background: var(--accent1);
 }
 
 .cancel-session-btn {
@@ -178,11 +197,11 @@
   background: #c82333;
 }
 
-/* Inline edit form styling */
+/* Inline Edit Form Styling */
 .edit-session-form {
   background: #f0f8ff;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--accent1);
   border-radius: 4px;
   margin-top: 10px;
 }
@@ -191,7 +210,7 @@
   display: block;
   margin-bottom: 8px;
   font-size: 0.95em;
-  color: #333;
+  color: var(--accent1);
 }
 
 .edit-buttons {
@@ -200,13 +219,13 @@
   margin-top: 10px;
 }
 
-/* Responsive adjustments */
+/* Responsive Adjustments */
 @media (max-width: 480px) {
   .dashboard-header .header-content h1 {
     font-size: 2.2em;
   }
   .dashboard-header .header-content p,
-  .dashboard-nav .profile-link,
+  .tab-buttons button,
   .book-btn,
   .session-item {
     font-size: 0.9em;

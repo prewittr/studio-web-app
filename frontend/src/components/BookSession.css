@@ -1,141 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+:root {
+  --primary: #F0EAD6;       /* Eggshell */
+  --secondary: #B28F61;     /* Muted Gold */
+  --tertiary: #D38D6A;      /* Warm Peach */
+  --accent1: #1F5C63;       /* Deep Teal */
+  --accent2: #A65D2F;       /* Rusty Copper */
+  --accent3: #2F6B74;       /* Dark Teal */
+}
+
 .book-session {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .book-session h2 {
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .form-group input,
-  .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1em;
-  }
-  
-  .available-slots {
-    margin: 20px 0;
-  }
-  
-  .available-slots h3 {
-    margin-bottom: 10px;
-    font-size: 1.2em;
-  }
-  
-  .slot-count {
-    font-weight: normal;
-    font-size: 0.9em;
-    margin-left: 5px;
-    color: #555;
-  }
-  
-  .slots-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-  }
-  
-  .slot-btn {
-    padding: 8px 12px;
-    border: 1px solid #007bff;
-    border-radius: 4px;
-    background: #fff;
-    cursor: pointer;
-    font-size: 0.9em;
-  }
-  
-  .slot-btn.selected {
-    background: #007bff;
-    color: #fff;
-  }
-  
-  .slot-btn:hover {
-    background: #0056b3;
-    color: #fff;
-  }
-  
-  .checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  button[type="submit"] {
-    background: #28a745;
-    color: #fff;
-    border: none;
-    padding: 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-top: 10px;
-  }
-  
-  button[type="submit"]:hover {
-    background: #218838;
-  }
-  
-  .success-message {
-    margin-top: 15px;
-    color: green;
-  }
-  
-  .error-message {
-    margin-top: 15px;
-    color: red;
-  }
-  .form-actions {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-  }
-  
-  button[type="submit"] {
-    background: #7851A9;
-    color: #fff;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-  }
-  
-  button[type="submit"]:hover {
-    background: #218838;
-  }
-  
-  .cancel-btn {
-    background: #dc3545;
-    color: #fff;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-  }
-  
-  .cancel-btn:hover {
-    background: #c82333;
-  }
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: var(--primary); /* Eggshell background */
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.book-session h2 {
+  margin-bottom: 20px;
+  color: var(--accent1); /* Deep Teal */
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: var(--accent1); /* Deep Teal */
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--secondary); /* Muted Gold */
+  border-radius: 4px;
+  font-size: 1em;
+  background: var(--primary);
+  color: var(--accent1);
+  box-sizing: border-box;
+}
+
+.available-slots {
+  margin: 20px 0;
+}
+
+.available-slots h3 {
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  color: var(--accent1);
+}
+
+.slot-count {
+  font-weight: normal;
+  font-size: 0.9em;
+  margin-left: 5px;
+  color: var(--accent1);
+}
+
+.slots-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.slot-btn {
+  padding: 8px 12px;
+  border: 1px solid var(--accent1);
+  border-radius: 4px;
+  background: var(--primary);
+  cursor: pointer;
+  font-size: 0.9em;
+  color: var(--accent1);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.slot-btn.selected {
+  background: var(--accent1);
+  color: var(--primary);
+}
+
+.slot-btn:hover {
+  background: var(--accent3); /* Dark Teal on hover */
+  color: var(--primary);
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Submit Button */
+button[type="submit"] {
+  background: var(--secondary); /* Muted Gold */
+  color: var(--primary);         /* Eggshell text */
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background: var(--accent1);   /* Deep Teal on hover */
+}
+
+/* Success and Error Messages */
+.success-message {
+  margin-top: 15px;
+  color: var(--secondary);
+}
+
+.error-message {
+  margin-top: 15px;
+  color: var(--accent2);
+}
+
+/* Form Actions Container */
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Cancel Button */
+.cancel-btn {
+  background: var(--accent2);  /* Rusty Copper */
+  color: var(--primary);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background: var(--accent3);  /* Dark Teal on hover */
+}

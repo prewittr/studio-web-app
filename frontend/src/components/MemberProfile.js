@@ -3,10 +3,14 @@ import axios from 'axios';
 import './MemberProfile.css';
 
 const MemberProfile = () => {
+  const token = localStorage.getItem('jwtToken'); 
   const [profile, setProfile] = useState({
     firstName: '',
     lastName: '',
     preferredName: '',
+    contactNumber: '',      
+    membershipType: '',     
+    membershipStatus: '',   // (read-only maybe)
     street: '',
     city: '',
     state: '',
@@ -33,6 +37,9 @@ const MemberProfile = () => {
           firstName: data.firstName || '',
           lastName: data.lastName || '',
           preferredName: data.preferredName || '',
+          contactNumber: data.contactNumber || '',
+          membershipType: data.membershipType || '',
+          membershipStatus: data.membershipStatus || 'Active',
           street: data.address?.street || '',
           city: data.address?.city || '',
           state: data.address?.state || '',
@@ -49,7 +56,7 @@ const MemberProfile = () => {
     };
 
     fetchProfile();
-  }, []);
+  }, [token]);
 
   // Update form fields on change
   const handleChange = (e) => {
@@ -108,13 +115,13 @@ const MemberProfile = () => {
       {error && <p className="error-message">{error}</p>}
       {message && <p className="success-message">{message}</p>}
       <form onSubmit={handleSubmit} className="profile-form">
-        {/* Profile Picture Section at the Top */}
+        {/* Profile Picture Section */}
         <div className="profile-pic-section">
           <label htmlFor="profilePicture">Profile Picture</label>
           <input 
             type="file" 
             id="profilePicture" 
-            name="file"  // Must be named "file" to work with multer
+            name="file"  // Must be named "file"
             accept="image/*"
             onChange={handleProfilePicChange}
           />
@@ -124,37 +131,70 @@ const MemberProfile = () => {
             </div>
           )}
         </div>
-        {/* Basic Information */}
+        {/* Personal Info */}
         <div className="form-group">
           <label htmlFor="firstName">First Name</label>
           <input 
-            type="text" 
-            id="firstName" 
-            name="firstName" 
-            value={profile.firstName} 
-            onChange={handleChange} 
-            required 
+            type="text"
+            id="firstName"
+            name="firstName"
+            value={profile.firstName}
+            onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
           <label htmlFor="lastName">Last Name</label>
           <input 
-            type="text" 
-            id="lastName" 
-            name="lastName" 
-            value={profile.lastName} 
-            onChange={handleChange} 
-            required 
+            type="text"
+            id="lastName"
+            name="lastName"
+            value={profile.lastName}
+            onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
           <label htmlFor="preferredName">Preferred Name</label>
           <input 
-            type="text" 
-            id="preferredName" 
-            name="preferredName" 
-            value={profile.preferredName} 
-            onChange={handleChange} 
+            type="text"
+            id="preferredName"
+            name="preferredName"
+            value={profile.preferredName}
+            onChange={handleChange}
+          />
+        </div>
+        {/* New: Contact Number */}
+        <div className="form-group">
+          <label htmlFor="contactNumber">Contact Number</label>
+          <input 
+            type="tel"
+            id="contactNumber"
+            name="contactNumber"
+            value={profile.contactNumber}
+            onChange={handleChange}
+          />
+        </div>
+        {/* New: Membership Type */}
+        <div className="form-group">
+          <label htmlFor="membershipType">Membership Type</label>
+          <input 
+            type="text"
+            id="membershipType"
+            name="membershipType"
+            value={profile.membershipType}
+            onChange={handleChange}
+          />
+        </div>
+        {/* Membership Status is usually read-only */}
+        <div className="form-group">
+          <label htmlFor="membershipStatus">Membership Status</label>
+          <input 
+            type="text"
+            id="membershipStatus"
+            name="membershipStatus"
+            value={profile.membershipStatus}
+            readOnly
           />
         </div>
         {/* Address Fieldset */}
@@ -163,62 +203,63 @@ const MemberProfile = () => {
           <div className="form-group">
             <label htmlFor="street">Street</label>
             <input 
-              type="text" 
-              id="street" 
-              name="street" 
-              value={profile.street} 
-              onChange={handleChange} 
+              type="text"
+              id="street"
+              name="street"
+              value={profile.street}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
             <label htmlFor="city">City</label>
             <input 
-              type="text" 
-              id="city" 
-              name="city" 
-              value={profile.city} 
-              onChange={handleChange} 
+              type="text"
+              id="city"
+              name="city"
+              value={profile.city}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
             <label htmlFor="state">State</label>
             <input 
-              type="text" 
-              id="state" 
-              name="state" 
-              value={profile.state} 
-              onChange={handleChange} 
+              type="text"
+              id="state"
+              name="state"
+              value={profile.state}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
             <label htmlFor="zip">Zip Code</label>
             <input 
-              type="text" 
-              id="zip" 
-              name="zip" 
-              value={profile.zip} 
-              onChange={handleChange} 
+              type="text"
+              id="zip"
+              name="zip"
+              value={profile.zip}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
             <label htmlFor="country">Country</label>
             <input 
-              type="text" 
-              id="country" 
-              name="country" 
-              value={profile.country} 
-              onChange={handleChange} 
+              type="text"
+              id="country"
+              name="country"
+              value={profile.country}
+              onChange={handleChange}
             />
           </div>
         </fieldset>
+        {/* Birthday */}
         <div className="form-group">
           <label htmlFor="birthday">Birthdate</label>
           <input 
-            type="date" 
-            id="birthday" 
-            name="birthday" 
-            value={profile.birthday} 
-            onChange={handleChange} 
+            type="date"
+            id="birthday"
+            name="birthday"
+            value={profile.birthday}
+            onChange={handleChange}
           />
         </div>
         <button type="submit" className="save-btn">Save Profile</button>
@@ -226,5 +267,6 @@ const MemberProfile = () => {
     </div>
   );
 };
+
 
 export default MemberProfile;

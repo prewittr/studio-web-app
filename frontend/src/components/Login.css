@@ -1,87 +1,99 @@
-/* style only the login-page container */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap');
+
+:root {
+  --primary: #F0EAD6;      /* Eggshell */
+  --secondary: #B28F61;    /* Muted Gold */
+  --tertiary: #D38D6A;     /* Warm Peach */
+  --accent1: #1F5C63;      /* Deep Teal */
+  --accent2: #A65D2F;      /* Rusty Copper */
+  --accent3: #2F6B74;      /* Dark Teal */
+}
+
+/* Container for the login-page */
 .login-page {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-  }
-  
-  .login-card {
-    background: #fff;
-    padding: 40px;
-    border-radius: 8px;
-    width: 360px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    text-align: center;
-  }
-  
-  .login-title {
-    margin-bottom: 24px;
-    color: #333;
-  }
-  
-  .login-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group {
-    margin-bottom: 16px;
-    text-align: left;
-  }
-  
-  .form-group label {
-    margin-bottom: 6px;
-    display: block;
-    color: #555;
-    font-size: 14px;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    box-sizing: border-box;
-  }
-  
-  .login-button {
-    padding: 12px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .login-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .error-message {
-    color: #dc3545;
-    margin-bottom: 16px;
-    font-size: 14px;
-  }
-  
-  .signup-text {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #555;
-  }
-  
-  .signup-text a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .signup-text a:hover {
-    text-decoration: underline;
-  }
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--primary); /* Eggshell background */
+}
+
+.login-card {
+  background: var(--tertiary); /* Warm Peach for a soft, inviting card */
+  padding: 40px;
+  border-radius: 8px;
+  width: 360px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.login-title {
+  margin-bottom: 24px;
+  color: var(--accent1); /* Deep Teal */
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  display: block;
+  color: var(--accent1); /* Deep Teal */
+  font-size: 14px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--secondary); /* Muted Gold */
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: var(--primary); /* Eggshell */
+  color: var(--accent1); /* Deep Teal */
+}
+
+.login-button {
+  padding: 12px;
+  background-color: var(--secondary); /* Muted Gold */
+  color: var(--primary); /* Eggshell text */
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: var(--accent3); /* Dark Teal on hover */
+}
+
+.error-message {
+  color: #dc3545;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.signup-text {
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--accent1); /* Deep Teal */
+}
+
+.signup-text a {
+  color: var(--secondary); /* Muted Gold */
+  text-decoration: none;
+}
+
+.signup-text a:hover {
+  text-decoration: underline;
+}

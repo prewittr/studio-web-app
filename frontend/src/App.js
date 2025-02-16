@@ -14,6 +14,7 @@ import InfraredSaunaInfo from './components/InfraredSaunaInfo';
 import ChromotherapyInfo from './components/ChromotherapyInfo';
 import HalotherapyInfo from './components/HalotherapyInfo';
 import RedLightTherapyInfo from './components/RedLightTherapyInfo';
+import MembershipOptions from './components/MembershipOptions';
 import MemberLanding from './components/MemberLanding';
 import BookSession from './components/BookSession';
 import StaffDashboard from './components/StaffDashboard';
@@ -81,7 +82,7 @@ function App() {
         <Route path="/chromotherapy-info" element={<ChromotherapyInfo />} />
         <Route path="/halotherapy-info" element={<HalotherapyInfo />} />
         <Route path="/redlight-info" element={<RedLightTherapyInfo />} />
-
+        <Route path="/memberships" element={<MembershipOptions />} />
         
         {/* Protected routes */}
         <Route

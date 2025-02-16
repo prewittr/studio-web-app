@@ -28,6 +28,9 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
+  contactNumber: { type: String },            
+  membershipType: { type: String },             // (e.g., "Basic", "Premium")
+  membershipStatus: { type: String, default: 'Active' }, // Could be Active, Expired, etc.
   address: {
     street: { type: String },
     city: { type: String },

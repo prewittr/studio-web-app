@@ -5,47 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
 import './BookSession.css';
 
-// Helper functions (getOperatingHours and generateTimeSlotsForDay)
-const getOperatingHours = (date) => {
-  const day = date.getDay();
-  // Weekends: 8am to 7pm, Weekdays: 7am to 8pm
-  if (day === 0 || day === 6) {
-    return { startHour: 8, endHour: 19 };
-  } else {
-    return { startHour: 7, endHour: 20 };
-  }
-};
-
-/*const generateTimeSlotsForDay = (day, sessionType) => {
-  const slots = [];
-  const { startHour, endHour } = getOperatingHours(day);
-  let slotDuration, interval;
-  if (sessionType === 'infrared') {
-    slotDuration = 60;
-    interval = 60;
-  } else if (sessionType === 'redlight') {
-    slotDuration = 25;
-    interval = 15;
-  } else {
-    return slots;
-  }
-  let current = new Date(day);
-  current.setHours(startHour, 0, 0, 0);
-  const endTime = new Date(day);
-  endTime.setHours(endHour, 0, 0, 0);
-  const slotDurationMs = slotDuration * 60000;
-  const lastValid = new Date(endTime.getTime() - slotDurationMs);
-  while (current <= lastValid) {
-    slots.push(new Date(current));
-    current = new Date(current.getTime() + interval * 60000);
-  }
-  return slots;
-};*/
-
 const BookSession = () => {
   const [sessionType, setSessionType] = useState('infrared'); // default infrared
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [availableSlots, setAvailableSlots] = useState([]);
+  const [availableSuites, setAvailableSuites] = useState([]);
+  const [selectedSuite, setSelectedSuite] = useState('');
   const [appointmentDate, setAppointmentDate] = useState(null);
   const [addGuest, setAddGuest] = useState(false);
   const [aromatherapy, setAromatherapy] = useState(false);
@@ -54,7 +19,7 @@ const BookSession = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Fetch available slots when sessionType or selectedDay changes.
+  // Fetch available time slots when sessionType or selectedDay changes.
   useEffect(() => {
     const fetchAvailability = async () => {
       try {
@@ -64,13 +29,15 @@ const BookSession = () => {
         const month = String(selectedDay.getMonth() + 1).padStart(2, '0');
         const day = String(selectedDay.getDate()).padStart(2, '0');
         const dateString = `${year}-${month}-${day}`;
+        console.log('Fetching availability for date:', dateString, 'and sessionType:', sessionType);
         const response = await axios.get('http://localhost:5000/api/sessions/availability', {
           headers: { Authorization: `Bearer ${token}` },
           params: { date: dateString, sessionType }
         });
         const slots = response.data.availableSlots.map((slot) => new Date(slot));
         setAvailableSlots(slots);
-        setAppointmentDate(null); // Reset selected slot when day/session changes
+        // Reset selected slot if day or session type changes.
+        setAppointmentDate(null);
       } catch (err) {
         console.error('Error fetching availability:', err.response ? err.response.data : err);
         setError(err.response?.data?.message || 'Error fetching availability');
@@ -80,6 +47,47 @@ const BookSession = () => {
     fetchAvailability();
   }, [sessionType, selectedDay]);
 
+  // Automatically set the appointmentDate to the first available slot if not already set.
+  useEffect(() => {
+    if (availableSlots.length > 0 && !appointmentDate) {
+      setAppointmentDate(availableSlots[0]);
+    }
+  }, [availableSlots, appointmentDate]);
+
+  // Fetch available suites when sessionType, selectedDay, or appointmentDate changes.
+  useEffect(() => {
+    const fetchSuites = async () => {
+      try {
+        const token = localStorage.getItem('jwtToken');
+        const year = selectedDay.getFullYear();
+        const month = String(selectedDay.getMonth() + 1).padStart(2, '0');
+        const day = String(selectedDay.getDate()).padStart(2, '0');
+        const dateString = `${year}-${month}-${day}`;
+        // Pass appointmentDate (if selected) as the time parameter to narrow down the time block
+        const timeParam = appointmentDate ? appointmentDate.toISOString() : undefined;
+        const endpoint =
+          sessionType === 'infrared'
+            ? 'http://localhost:5000/api/suites/sauna'
+            : 'http://localhost:5000/api/suites/redlight';
+        console.log('Fetching suites with date:', dateString, 'time:', timeParam, 'for sessionType:', sessionType);
+        const response = await axios.get(endpoint, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { date: dateString, time: timeParam }
+        });
+        console.log('Suites response:', response.data);
+        setAvailableSuites(response.data.suites || []);
+        setSelectedSuite(''); // Reset suite selection when day/session changes
+      } catch (err) {
+        console.error('Error fetching available suites:', err.response ? err.response.data : err);
+        setAvailableSuites([]);
+      }
+    };
+
+    if (appointmentDate) {
+      fetchSuites();
+    }
+  }, [sessionType, selectedDay, appointmentDate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
@@ -88,24 +96,29 @@ const BookSession = () => {
       setError('Please select a time slot.');
       return;
     }
-
-    // Extra front-end validation: ensure the selected appointment is in the future.
+    if (!selectedSuite) {
+      setError('Please select an available suite.');
+      return;
+    }
     if (new Date(appointmentDate) < new Date()) {
-        setError('The selected time is in the past. Please choose a future time slot.');
-        return;
-      }
+      setError('The selected time is in the past. Please choose a future time slot.');
+      return;
+    }
       
     try {
       const token = localStorage.getItem('jwtToken');
+      const bookingData = {
+        sessionType,
+        appointmentDate: appointmentDate.toISOString(),
+        suite: selectedSuite,
+        addGuest,
+        aromatherapy,
+        halotherapy
+      };
+
       const response = await axios.post(
         'http://localhost:5000/api/sessions/book',
-        {
-          sessionType,
-          appointmentDate: appointmentDate.toISOString(),
-          addGuest,
-          aromatherapy,
-          halotherapy
-        },
+        bookingData,
         { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } }
       );
       setMessage(response.data.message || 'Session booked successfully!');
@@ -116,9 +129,7 @@ const BookSession = () => {
     }
   };
 
-  // Cancel the booking process and navigate back to the member dashboard.
   const handleCancel = () => {
-    // Optionally, reset any temporary state here
     navigate('/member');
   };
 
@@ -131,10 +142,17 @@ const BookSession = () => {
         <select
           id="sessionType"
           value={sessionType}
-          onChange={(e) => setSessionType(e.target.value)}
+          onChange={(e) => {
+            setSessionType(e.target.value);
+            // Reset suite and slot selections when session type changes
+            setAvailableSlots([]);
+            setAvailableSuites([]);
+            setAppointmentDate(null);
+            setSelectedSuite('');
+          }}
         >
           <option value="infrared">1 Hour Infrared Sauna Session</option>
-          <option value="redlight">25 Min Redlight Bed Session</option>
+          <option value="redlight">25 Min Red Light Bed Session</option>
         </select>
       </div>
 
@@ -143,7 +161,11 @@ const BookSession = () => {
         <DatePicker
           id="selectedDay"
           selected={selectedDay}
-          onChange={(date) => setSelectedDay(date)}
+          onChange={(date) => {
+            setSelectedDay(date);
+            setAppointmentDate(null);
+            setSelectedSuite('');
+          }}
           dateFormat="MMMM d, yyyy"
           minDate={new Date()}
         />
@@ -165,7 +187,7 @@ const BookSession = () => {
                 }`}
                 onClick={() => setAppointmentDate(slot)}
               >
-                {slot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {slot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
               </button>
             ))
           ) : (
@@ -174,8 +196,36 @@ const BookSession = () => {
         </div>
       </div>
 
+      {availableSuites.length > 0 ? (
+        <div className="form-group">
+          <label htmlFor="suiteSelection">
+            Select {sessionType === 'infrared' ? 'Sauna Suite' : 'Red Light Bed Suite'}:
+          </label>
+          <select
+            id="suiteSelection"
+            value={selectedSuite}
+            onChange={(e) => setSelectedSuite(e.target.value)}
+            required
+          >
+            <option value="">-- Select a Suite --</option>
+            {availableSuites.map((suite) => (
+              <option key={suite.id} value={suite.suiteNumber}>
+                {suite.name} (Suite {suite.suiteNumber})
+              </option>
+            ))}
+          </select>
+        </div>
+      ) : (
+        <div className="form-group">
+          <p>No available suites for this session type on this day.</p>
+        </div>
+      )}
+
       {appointmentDate && (
-        <p>Selected Time: {appointmentDate.toLocaleString()}</p>
+        <p>
+          Selected Time:{' '}
+          {appointmentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+        </p>
       )}
 
       {sessionType === 'infrared' && (

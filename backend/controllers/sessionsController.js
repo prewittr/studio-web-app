@@ -15,7 +15,7 @@ const getOperatingHours = (date) => {
   // Weekends (Saturday=6, Sunday=0): 8am to 7pm.
   // Weekdays (Monday–Friday): 7am to 8pm.
   if (day === 0 || day === 6) {
-    return { startHour: 8, endHour: 20 };
+    return { startHour: 7, endHour: 20 };
   } else {
     return { startHour: 7, endHour: 21 };
   }
@@ -118,7 +118,7 @@ exports.getAvailability = async (req, res) => {
  
   exports.bookSession = async (req, res) => {
     try {
-      const { sessionType, appointmentDate, addGuest, aromatherapy, halotherapy } = req.body;
+      const { sessionType, appointmentDate, addGuest, aromatherapy, halotherapy, suite } = req.body;
       if (!sessionType || !appointmentDate) {
         return res.status(400).json({ message: 'Session type and appointment date are required.' });
       }
@@ -145,14 +145,14 @@ exports.getAvailability = async (req, res) => {
         return res.status(400).json({ message: 'Infrared sauna sessions must be booked on the hour.' });
       }
       if (sessionType === 'redlight' && (newStart.getMinutes() % 15 !== 0)) {
-        return res.status(400).json({ message: 'Redlight bed sessions must be booked in quarter-hour increments.' });
+        return res.status(400).json({ message: 'Red light bed sessions must be booked in quarter-hour increments.' });
       }
       
       // Ensure a member can only book one session of each type per day.
       const startOfDay = new Date(newStart);
-      startOfDay.setHours(0,0,0,0);
+      startOfDay.setHours(0, 0, 0, 0);
       const endOfDay = new Date(newStart);
-      endOfDay.setHours(23,59,59,999);
+      endOfDay.setHours(23, 59, 59, 999);
       
       const existingDailyBooking = await SessionBooking.findOne({
         user: req.user.id,
@@ -165,27 +165,21 @@ exports.getAvailability = async (req, res) => {
       }
       
       // Check for overlapping bookings of the opposite type.
-      // We use a query based on the standard overlap formula:
-      // Two intervals [A,B) and [C,D) overlap if A < D and B > C.
       const overlappingOpposite = await SessionBooking.find({
         user: req.user.id,
-        sessionType: { $ne: sessionType }, // opposite session type
+        sessionType: { $ne: sessionType },
         status: { $ne: 'cancelled' },
-        appointmentDate: { $lt: newEnd }, // existing booking starts before newEnd
-        // We'll use an $expr to compute existing booking's end time:
+        appointmentDate: { $lt: newEnd },
         $expr: { $gt: [ { $add: [ "$appointmentDate", { $multiply: ["$duration", 60000] } ] }, newStart ] }
       });
       
       if (overlappingOpposite.length > 0) {
-        // For each overlapping booking, check the allowed offsets.
         for (let opp of overlappingOpposite) {
           const oppStart = new Date(opp.appointmentDate);
-          const oppDuration = opp.duration; // expected to be 60 for sauna, 25 for redlight.
+          const oppDuration = opp.duration;
           const oppEnd = new Date(oppStart.getTime() + oppDuration * 60000);
           
           if (sessionType === 'redlight' && opp.sessionType === 'infrared') {
-            // Allowed if the new redlight booking ends at least 30 minutes before the sauna starts,
-            // or if it starts at least 60 minutes after the sauna starts.
             const allowedBefore = new Date(oppStart.getTime() - 30 * 60000);
             const allowedAfter = new Date(oppStart.getTime() + 60 * 60000);
             if (!(newEnd <= allowedBefore || newStart >= allowedAfter)) {
@@ -194,7 +188,6 @@ exports.getAvailability = async (req, res) => {
               });
             }
           } else if (sessionType === 'infrared' && opp.sessionType === 'redlight') {
-            // For a new sauna booking overlapping an existing redlight, we simply disallow overlap.
             return res.status(400).json({
               message: 'You cannot book a sauna session that overlaps with an existing redlight session.'
             });
@@ -202,87 +195,92 @@ exports.getAvailability = async (req, res) => {
         }
       }
       
-      // Capacity checks based on the time block.
-      const { blockStart, blockEnd } = getTimeBlock(newStart);
+      // Determine suite assignment.
       let suiteAssignment = null;
-      if (sessionType === 'redlight') {
-  // For redlight sessions, capacity is 4 per hour (2 per redlight bed, one per half-hour segment).
-  
-  // Determine the half-hour segment for the new booking:
-  // If the appointment minutes are less than 30, segment 1; otherwise, segment 2.
-  const segment = newStart.getMinutes() < 30 ? 1 : 2;
-
-  // Fetch all existing redlight bookings for this hour (time block)
-  const existingRedlight = await SessionBooking.find({
-    sessionType: 'redlight',
-    status: { $ne: 'cancelled' },
-    appointmentDate: { $gte: blockStart, $lt: blockEnd }
-  });
-
-  // For each redlight suite (number 1 and 2), count how many bookings are in the same segment.
-  const assignedRed1 = existingRedlight.filter(b => {
-    if (b.suiteAssignment && b.suiteAssignment.number === 1) {
-      const bSegment = new Date(b.appointmentDate).getMinutes() < 30 ? 1 : 2;
-      return bSegment === segment;
-    }
-    return false;
-  }).length;
-  
-  const assignedRed2 = existingRedlight.filter(b => {
-    if (b.suiteAssignment && b.suiteAssignment.number === 2) {
-      const bSegment = new Date(b.appointmentDate).getMinutes() < 30 ? 1 : 2;
-      return bSegment === segment;
-    }
-    return false;
-  }).length;
-
-  if (assignedRed1 < 1) {
-    suiteAssignment = { type: 'redlight', number: 1 };
-  } else if (assignedRed2 < 1) {
-    suiteAssignment = { type: 'redlight', number: 2 };
-  } else {
-    return res.status(400).json({ 
-      message: 'Redlight bed capacity for this hour has been reached for the selected half-hour segment.' 
-    });
-  }
-}
-else if (sessionType === 'infrared') {
-        // For infrared, capacity is 8 per hour.
-        if (req.user && req.user.handicap) {
-          // Handicap users must get suite 4.
-          const existingHandicap = await SessionBooking.findOne({
-            sessionType: 'infrared',
-            status: { $ne: 'cancelled' },
-            'suiteAssignment.type': 'sauna',
-            'suiteAssignment.number': 4,
-            appointmentDate: { $gte: blockStart, $lt: blockEnd }
-          });
-          if (existingHandicap) {
-            return res.status(400).json({ message: 'Handicap sauna capacity for this hour has been reached.' });
-          }
-          suiteAssignment = { type: 'sauna', number: 4, handicap: true };
-        } else {
-          // Non-handicap users use the pool [1,2,3,5,6,7,8].
-          let availablePool = [1, 2, 3, 5, 6, 7, 8];
-          const existingInfrared = await SessionBooking.find({
-            sessionType: 'infrared',
+      if (suite) {
+        // Convert the provided suite to a number
+        const suiteNumber = Number(suite);
+        if (isNaN(suiteNumber)) {
+          return res.status(400).json({ message: 'Invalid suite selection. Suite number must be numeric.' });
+        }
+        // Check if any booking exists for the chosen suite during the same time slot.
+        const existingSuiteBooking = await SessionBooking.findOne({
+          'suiteAssignment.type': sessionType === 'infrared' ? 'sauna' : 'redlight',
+          'suiteAssignment.number': suiteNumber,
+          appointmentDate: { $gte: newStart, $lt: newEnd },
+          status: { $ne: 'cancelled' }
+        });
+        if (existingSuiteBooking) {
+          return res.status(400).json({ message: 'Selected suite is already booked for the chosen time slot. Please choose another suite or time slot.' });
+        }
+        suiteAssignment = { type: sessionType === 'infrared' ? 'sauna' : 'redlight', number: suiteNumber };
+      } else {
+        // Automatic suite assignment (existing logic)
+        const { blockStart, blockEnd } = getTimeBlock(newStart);
+        if (sessionType === 'redlight') {
+          const segment = newStart.getMinutes() < 30 ? 1 : 2;
+          const existingRedlight = await SessionBooking.find({
+            sessionType: 'redlight',
             status: { $ne: 'cancelled' },
             appointmentDate: { $gte: blockStart, $lt: blockEnd }
           });
-          existingInfrared.forEach(b => {
-            if (b.suiteAssignment && b.suiteAssignment.type === 'sauna') {
-              const num = b.suiteAssignment.number;
-              availablePool = availablePool.filter(n => n !== num);
+          const assignedRed1 = existingRedlight.filter(b => {
+            if (b.suiteAssignment && b.suiteAssignment.type === 'redlight' && b.suiteAssignment.number === 1) {
+              const bSegment = new Date(b.appointmentDate).getMinutes() < 30 ? 1 : 2;
+              return bSegment === segment;
             }
-          });
-          if (availablePool.length === 0) {
-            return res.status(400).json({ message: 'Infrared sauna capacity for this hour has been reached.' });
+            return false;
+          }).length;
+          const assignedRed2 = existingRedlight.filter(b => {
+            if (b.suiteAssignment && b.suiteAssignment.type === 'redlight' && b.suiteAssignment.number === 2) {
+              const bSegment = new Date(b.appointmentDate).getMinutes() < 30 ? 1 : 2;
+              return bSegment === segment;
+            }
+            return false;
+          }).length;
+          if (assignedRed1 < 1) {
+            suiteAssignment = { type: 'redlight', number: 1 };
+          } else if (assignedRed2 < 1) {
+            suiteAssignment = { type: 'redlight', number: 2 };
+          } else {
+            return res.status(400).json({ 
+              message: 'Redlight bed capacity for this hour has been reached for the selected half-hour segment.' 
+            });
           }
-          suiteAssignment = { type: 'sauna', number: availablePool[0] };
+        } else if (sessionType === 'infrared') {
+          if (req.user && req.user.handicap) {
+            const existingHandicap = await SessionBooking.findOne({
+              sessionType: 'infrared',
+              status: { $ne: 'cancelled' },
+              'suiteAssignment.type': 'sauna',
+              'suiteAssignment.number': 4,
+              appointmentDate: { $gte: blockStart, $lt: blockEnd }
+            });
+            if (existingHandicap) {
+              return res.status(400).json({ message: 'Handicap sauna capacity for this hour has been reached.' });
+            }
+            suiteAssignment = { type: 'sauna', number: 4, handicap: true };
+          } else {
+            let availablePool = [1, 2, 3, 5, 6, 7, 8];
+            const existingInfrared = await SessionBooking.find({
+              sessionType: 'infrared',
+              status: { $ne: 'cancelled' },
+              appointmentDate: { $gte: blockStart, $lt: blockEnd }
+            });
+            existingInfrared.forEach(b => {
+              if (b.suiteAssignment && b.suiteAssignment.type === 'sauna') {
+                const num = b.suiteAssignment.number;
+                availablePool = availablePool.filter(n => n !== num);
+              }
+            });
+            if (availablePool.length === 0) {
+              return res.status(400).json({ message: 'Infrared sauna capacity for this hour has been reached.' });
+            }
+            suiteAssignment = { type: 'sauna', number: availablePool[0] };
+          }
         }
       }
-      
-      // Create the booking with the computed suite assignment.
+        
       const booking = new SessionBooking({
         user: req.user.id,
         sessionType,
@@ -294,7 +292,7 @@ else if (sessionType === 'infrared') {
         status: 'booked',
         suiteAssignment
       });
-      
+        
       await booking.save();
       res.status(201).json({ message: 'Session booked successfully!', booking });
     } catch (error) {
@@ -302,30 +300,28 @@ else if (sessionType === 'infrared') {
       res.status(500).json({ message: 'Server error while booking session.' });
     }
   };
-
+  
+  
   exports.updateSession = async (req, res) => {
     try {
       const sessionId = req.params.id;
       const updates = req.body; // Expecting an object with fields like { addGuest, aromatherapy, halotherapy }
-  
-      // Optionally, you may want to verify that the session belongs to the current user.
-      // For example:
+    
       const session = await SessionBooking.findById(sessionId);
       if (!session || session.user.toString() !== req.user.id) {
         return res.status(403).json({ message: 'Not authorized to update this session.' });
-       }
-  
-      // Update the session with new data. The { new: true } option returns the updated document.
+      }
+    
       const updatedSession = await SessionBooking.findByIdAndUpdate(
         sessionId,
         updates,
         { new: true, runValidators: true }
       );
-  
+    
       if (!updatedSession) {
         return res.status(404).json({ message: 'Session not found.' });
       }
-  
+    
       res.json({
         message: 'Session updated successfully!',
         updatedSession,
@@ -335,10 +331,8 @@ else if (sessionType === 'infrared') {
       res.status(500).json({ message: 'Server error updating session.' });
     }
   };
-  
-  
-// Function to fetch the member's bookings
-exports.getMyBookings = async (req, res) => {
+    
+  exports.getMyBookings = async (req, res) => {
     try {
       const bookings = await SessionBooking.find({
         user: req.user.id,
@@ -350,8 +344,7 @@ exports.getMyBookings = async (req, res) => {
       res.status(500).json({ message: "Server error while fetching bookings." });
     }
   };
-
-  // Function to cancel sessions
+  
   exports.cancelSession = async (req, res) => {
     try {
       const bookingId = req.params.id;
@@ -366,7 +359,6 @@ exports.getMyBookings = async (req, res) => {
       if (booking.appointmentDate < now) {
         return res.status(400).json({ message: 'Cannot cancel a session that has already started or passed.' });
       }
-      // Calculate time difference in milliseconds
       const timeDiffMs = booking.appointmentDate.getTime() - now.getTime();
       const twoHoursMs = 2 * 60 * 60 * 1000;
       let warningMessage = '';
@@ -383,13 +375,11 @@ exports.getMyBookings = async (req, res) => {
       res.status(500).json({ message: 'Server error while cancelling session.' });
     }
   };
-
-  // Function: Get all bookings (for staff)
+  
   exports.getAllBookings = async (req, res) => {
     try {
-      // Populate the "user" field to retrieve the username.
       const bookings = await SessionBooking.find({})
-        .populate('user', 'username') // only bring the username field from the User document
+        .populate('user', 'username')
         .sort({ appointmentDate: 1 });
       res.json({ bookings });
     } catch (error) {

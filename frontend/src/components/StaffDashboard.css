@@ -1,61 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap');
+
+:root {
+  --primary: #F0EAD6;       /* Eggshell (lighter background) */
+  --secondary: #B28F61;     /* Muted Gold (secondary background/accent) */
+  --tertiary: #D38D6A;      /* Warm Peach (accent for even rows, etc.) */
+  --accent1: #1F5C63;       /* Deep Teal (primary text and headings) */
+  --accent2: #A65D2F;       /* Rusty Copper (hover state on buttons) */
+  --accent3: #2F6B74;       /* Dark Teal (alternative accent if needed) */
+}
+
 .staff-dashboard {
-    padding: 40px;
-    background: #eef2f7;
-    min-height: 100vh;
-    text-align: center;
-  }
-  
-  .staff-dashboard h1 {
-    font-size: 2.5em;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .staff-dashboard h2 {
-    font-size: 1.8em;
-    color: #555;
-    margin-bottom: 20px;
-  }
-  
-  .dashboard-actions {
-    margin: 20px 0;
-  }
-  
-  .assignment-btn {
-    background: #28a745;
-    color: #fff;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-bottom: 20px;
-  }
-  
-  .assignment-btn:hover {
-    background: #218838;
-  }
-  
-  .booking-table {
-    width: 90%;
-    max-width: 1000px;
-    margin: 0 auto;
-    border-collapse: collapse;
-  }
-  
-  .booking-table th,
-  .booking-table td {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-  }
-  
-  .booking-table th {
-    background: #007bff;
-    color: #fff;
-    text-align: left;
-  }
-  
-  .booking-table tr:nth-child(even) td {
-    background: #f2f2f2;
-  }
-  
+  padding: 40px;
+  background: var(--primary);
+  min-height: 100vh;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.staff-dashboard h1 {
+  font-size: 2.5em;
+  color: var(--accent1);
+  margin-bottom: 20px;
+}
+
+.staff-dashboard h2 {
+  font-size: 1.8em;
+  color: var(--secondary);
+  margin-bottom: 20px;
+}
+
+.dashboard-actions {
+  margin: 20px 0;
+}
+
+.assignment-btn {
+  background: var(--secondary);
+  color: var(--primary);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-bottom: 20px;
+  transition: background 0.3s ease;
+}
+
+.assignment-btn:hover {
+  background: var(--accent2); /* Rusty Copper on hover */
+}
+
+.booking-table {
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.booking-table th,
+.booking-table td {
+  padding: 12px 15px;
+  border: 1px solid var(--secondary);
+}
+
+.booking-table th {
+  background: var(--accent1); /* Deep Teal for header */
+  color: var(--primary);       /* Eggshell text */
+  text-align: left;
+}
+
+.booking-table tr:nth-child(even) td {
+  background: var(--tertiary); /* Warm Peach for even rows */
+}

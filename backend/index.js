@@ -61,6 +61,11 @@ app.use('/api/assignments', assignmentsRoutes);
 const uploadRoutes = require('./routes/uploadRoutes');
 app.use('/api/upload', uploadRoutes);
 
+// Suite routes
+const suitesRoutes = require('./routes/suitesRoutes');
+app.use('/api/suites', suitesRoutes);
+
+
 // Sample route
 app.get('/', (req, res) => { 
     res.send('Welcome to Diviti Adora Studio Web App Backend!');

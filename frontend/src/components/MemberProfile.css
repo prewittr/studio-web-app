@@ -1,18 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap');
+
+:root {
+  --primary: #F0EAD6;       /* Eggshell */
+  --secondary: #B28F61;     /* Muted Gold */
+  --tertiary: #D38D6A;      /* Warm Peach */
+  --accent1: #1F5C63;       /* Deep Teal */
+  --accent2: #A65D2F;       /* Rusty Copper */
+  --accent3: #2F6B74;       /* Dark Teal */
+}
+
 .member-profile {
   max-width: 500px;
-  margin: 120px auto; /* Extra top margin for clearance (e.g., fixed navbar) */
+  margin: 140px auto; /* Extra margin to clear any fixed nav */
   padding: 30px;
-  background: #fff;
+  background: var(--primary); /* Eggshell */
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   font-family: 'Montserrat', sans-serif;
+  color: var(--accent1); /* Deep Teal for primary text */
 }
 
 .member-profile h2 {
   text-align: center;
   margin-bottom: 20px;
   font-size: 2em;
-  color: #333;
+  color: var(--accent1); /* Deep Teal for headings */
 }
 
 .profile-form {
@@ -31,30 +43,26 @@
   display: block;
   margin-bottom: 10px;
   font-weight: 600;
-  color: #555;
+  color: var(--accent1);
 }
 
 .profile-pic-section input[type="file"] {
   margin-bottom: 10px;
 }
 
-.profile-pic-preview {
-  text-align: center;
-}
-
 .profile-pic-preview img {
   max-width: 150px;
   height: auto;
   border-radius: 50%;
-  border: 2px solid #ddd;
+  border: 2px solid var(--secondary); /* Muted Gold */
 }
 
-/* Form group styling */
+/* Form Group Styling */
 .form-group {
   display: flex;
   flex-direction: column;
   font-size: 14px;
-  color: #555;
+  color: var(--accent1);
 }
 
 .form-group label {
@@ -63,14 +71,16 @@
 
 .form-group input {
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--secondary); /* Muted Gold */
   border-radius: 4px;
   font-size: 14px;
+  background: var(--primary); /* Eggshell */
+  color: var(--accent1);
 }
 
-/* Address fieldset */
+/* Address Fieldset */
 .address-fieldset {
-  border: 1px solid #ddd;
+  border: 1px solid var(--secondary);
   padding: 10px;
   border-radius: 4px;
   margin-bottom: 15px;
@@ -79,14 +89,14 @@
 .address-fieldset legend {
   font-weight: bold;
   padding: 0 5px;
-  color: #333;
+  color: var(--accent1);
 }
 
-/* Save button */
+/* Save Button */
 .save-btn {
   padding: 12px;
-  background: linear-gradient(135deg, #007bff, #00c6ff);
-  color: #fff;
+  background: linear-gradient(135deg, var(--accent1), var(--secondary));
+  color: var(--primary); /* Eggshell text on gradient */
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -96,10 +106,10 @@
 }
 
 .save-btn:hover {
-  background: linear-gradient(135deg, #0056b3, #0088cc);
+  background: linear-gradient(135deg, var(--secondary), var(--accent1));
 }
 
-/* Error and success messages */
+/* Error and Success Messages */
 .error-message {
   color: #dc3545;
   margin-bottom: 10px;
@@ -112,7 +122,7 @@
   text-align: center;
 }
 
-/* Responsive adjustments for mobile devices */
+/* Responsive Adjustments */
 @media (max-width: 480px) {
   .member-profile {
     margin: 80px 10px;
