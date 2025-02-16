@@ -35,13 +35,21 @@ const SessionBookingSchema = new mongoose.Schema({
     type: String,
     enum: ['booked', 'cancelled'],
     default: 'booked'
-  },
+  },  
   suiteAssignment: {
     type: {
       type: String, // 'sauna' or 'redlight'
-      enum: ['sauna', 'redlight']
+      enum: ['sauna', 'redlight'],
+      required: false
     },
-    number: Number  // For sauna: 1..8; for redlight: 1..2
+    number: {
+      type: Number,
+      required: false
+    },
+    handicap: {
+      type: Boolean,
+      default: false
+    }
   },
   cancelledAt: Date,
   cancellationFeeApplied: { type: Boolean, default: false },

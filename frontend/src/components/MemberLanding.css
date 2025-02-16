@@ -104,15 +104,19 @@
 
 /* Session List & Items */
 .session-list {
-  list-style: none;
-  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style-type: none;
+  gap: 20px;
 }
 
 .session-item {
-  background: var(--tertiary);
+  background: #fff; /*var(--tertiary);*/
   margin: 10px 0;
   padding: 15px;
-  border-radius: 4px;
+  width: 280px;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: transform 0.2s ease;
   color: var(--accent1);

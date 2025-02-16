@@ -224,13 +224,7 @@ const MemberLanding = () => {
                     className="edit-btn"
                   >
                     Edit Session
-                  </button>
-                  <button
-                    onClick={() => handleCancelSession(booking._id)}
-                    className="cancel-btn"
-                  >
-                    Cancel Session
-                  </button>
+                  </button>                 
                 </div>
               )}
             </li>

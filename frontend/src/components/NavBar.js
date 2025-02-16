@@ -27,7 +27,7 @@ const NavBar = ({ token, onLogout }) => {
       </div>
       <div className={`navbar__links ${isOpen ? 'open' : ''}`}>
         <Link to="/" onClick={handleLinkClick}>Home</Link>
-        <Link to="/features" onClick={handleLinkClick}>Features</Link>
+        <Link to="/memberships" onClick={handleLinkClick}>Services</Link>
         <Link to="/contact" onClick={handleLinkClick}>Contact</Link>
         {token ? (
           <>

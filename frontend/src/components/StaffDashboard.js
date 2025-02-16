@@ -15,9 +15,9 @@ const StaffDashboard = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setBookings(response.data.bookings);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching all bookings:', error);
+      } finally {
         setLoading(false);
       }
     };
@@ -25,16 +25,16 @@ const StaffDashboard = () => {
     fetchBookings();
   }, [token]);
 
-  // Helper function to format the suite assignment.
+  // Updated formatting function for suite assignment
   const formatSuiteAssignment = (assignment) => {
     if (!assignment) return 'Not Assigned';
     if (assignment.type === 'redlight') {
-      return `Redlight ${assignment.number}`;
-    } else if (assignment.type === 'sauna') {
-      if (assignment.handicap) {
-        return 'Handicap';
-      }
-      return `Sauna ${assignment.number}`;
+      return `Red Light Bed Suite ${assignment.number}`;
+    }
+    if (assignment.type === 'sauna') {
+      return assignment.handicap 
+        ? `Handicap Suite ${assignment.number}` 
+        : `Sauna Suite ${assignment.number}`;
     }
     return 'Not Assigned';
   };
@@ -47,7 +47,7 @@ const StaffDashboard = () => {
     <div className="staff-dashboard">
       <h1>Staff Dashboard</h1>
       
-      {/* Add a link to the suite assignments page */}
+      {/* Link to Suite Assignments page */}
       <div className="dashboard-actions">
         <Link to="/suite-assignments">
           <button className="assignment-btn">View Suite Assignments</button>
@@ -93,7 +93,7 @@ const StaffDashboard = () => {
                   )}
                 </td>
                 <td>{booking.status}</td>
-                <td>{formatSuiteAssignment(booking.suiteAssignment)}</td>                
+                <td>{formatSuiteAssignment(booking.suiteAssignment)}</td>
               </tr>
             ))}
           </tbody>

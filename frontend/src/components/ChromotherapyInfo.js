@@ -17,7 +17,7 @@ const ChromotherapyInfo = () => {
         <section>
           <h2>How Chromotherapy Supports Your Health</h2>
           <p>
-            New Day Healing and Wellness integrates chromotherapy with our infrared sauna, float tank, salt booth, and red light therapy equipment
+            Diviti Adora integrates chromotherapy with our infrared sauna, and red light therapy equipment
             to enhance your journey to optimal living. Discover the benefits:
           </p>
           <ul>

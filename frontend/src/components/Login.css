@@ -20,7 +20,7 @@
 }
 
 .login-card {
-  background: var(--tertiary); /* Warm Peach for a soft, inviting card */
+  background: #FDF7F2; 
   padding: 40px;
   border-radius: 8px;
   width: 360px;

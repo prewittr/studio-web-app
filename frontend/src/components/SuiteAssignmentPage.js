@@ -36,17 +36,17 @@ const SuiteAssignmentPage = () => {
   const layout = {
     column1: [
       { type: 'redlight', number: 1 },
-      { type: 'sauna', number: 1 },
-      { type: 'sauna', number: 2 },
+      { type: 'sauna', number: 4 },
       { type: 'sauna', number: 3 },
-      { type: 'sauna', number: 4, handicap: true }
+      { type: 'sauna', number: 2 },
+      { type: 'sauna', number: 1, handicap: true }
     ],
     column2: [
       { type: 'redlight', number: 2 },
-      { type: 'sauna', number: 5 },
-      { type: 'sauna', number: 6 },
+      { type: 'sauna', number: 8 },
       { type: 'sauna', number: 7 },
-      { type: 'sauna', number: 8 }
+      { type: 'sauna', number: 6 },
+      { type: 'sauna', number: 5 }
     ]
   };
 

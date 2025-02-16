@@ -65,6 +65,7 @@ exports.getSaunaSuites = async (req, res) => {
       .filter(suite => !bookedSuiteNumbers.includes(suite.suiteNumber))
       .map(suite => ({
         id: suite.suiteNumber,
+        suiteNumber: suite.suiteNumber,
         name: suite.name
       }));
 
@@ -122,7 +123,8 @@ exports.getRedlightSuites = async (req, res) => {
       .filter(suite => !bookedSuiteNumbers.includes(suite.suiteNumber))
       .map(suite => ({
         id: suite.suiteNumber,
-        name: suite.name
+        name: suite.name,
+        suiteNumber: suite.suiteNumber
       }));
 
     res.json({ suites: availableSuites });

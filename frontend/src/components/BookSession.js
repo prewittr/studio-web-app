@@ -178,7 +178,6 @@ const BookSession = () => {
           )}
         </div>
       </div>
-
       {availableSuites.length > 0 ? (
         <div className="form-group">
           <label htmlFor="suiteSelection">
@@ -187,13 +186,17 @@ const BookSession = () => {
           <select
   id="suiteSelection"
   value={selectedSuite}
-  onChange={(e) => setSelectedSuite(e.target.value)}
+  onChange={(e) => {
+    const value = e.target.value;
+    setSelectedSuite(value);
+    console.log('Selected Suite:', value);
+  }}
   required
 >
   <option value="">-- Select a Suite --</option>
   {availableSuites.map((suite) => (
     <option key={suite.id} value={suite.suiteNumber}>
-      {suite.name} 
+      {suite.name} (Suite {suite.suiteNumber})
     </option>
   ))}
 </select>

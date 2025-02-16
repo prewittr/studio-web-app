@@ -1,87 +1,103 @@
-:root {
-  --blush-pink: #FADADD;
-  --champagne-gold: #D4AF37;
-  --ivory-white: #FDF7F2;
-  --warm-taupe: #C8ADA2;
-}
-
-/* Contact Page Background */
+/* Set a full-page background image (if desired, or use a solid color) */
 .contact-page {
-  background-image: url('../images/blue-monday-telephone.jpg');
-  background-size: cover;
-  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  background: #F0EAD6;  /* Eggshell or a light background */
   min-height: 100vh;
-  padding: 50px;
-  color: var(--warm-taupe);
 }
 
-/* Headings and Description */
-.contact-page h2 {
-  text-align: center;
-  margin-bottom: 10px;
-  color: var(--champagne-gold);
-}
-
-.contact-page p {
-  text-align: center;
-  margin-bottom: 30px;
-  color: var(--warm-taupe);
-}
-
-/* Contact Form Styling */
-.contact-form {
-  background: var(--ivory-white);
-  padding: 20px;
+/* Container for the contact form */
+.contact-form-container {
+  background: #FDF7F2; /* Ivory White */
+  padding: 30px;
   border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   max-width: 500px;
-  margin: 0 auto;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin-bottom: 40px;
+  text-align: center;
 }
 
-/* Form Group Styling */
-.form-group {
+.contact-form h2 {
+  margin-bottom: 10px;
+  color: var(--accent1, #1F5C63); /* fallback Deep Teal */
+}
+
+.contact-form p {
+  margin-bottom: 20px;
+  color: var(--secondary, #B28F61);
+}
+
+.contact-form .form-group {
   margin-bottom: 15px;
+  text-align: left;
 }
 
-.form-group label {
+.contact-form .form-group label {
   display: block;
   margin-bottom: 5px;
-  font-weight: bold;
-  color: var(--warm-taupe);
+  font-weight: 600;
+  color: var(--accent1, #1F5C63);
 }
 
-.form-group input,
-.form-group textarea {
+.contact-form .form-group input,
+.contact-form .form-group textarea {
   width: 100%;
-  padding: 8px;
-  border: 1px solid var(--warm-taupe);
+  padding: 10px;
+  border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1em;
-  background: var(--ivory-white);
-  color: var(--warm-taupe);
+  box-sizing: border-box;
 }
 
-/* Submit Button */
-.submit-btn {
-  background: var(--champagne-gold);
-  color: var(--ivory-white);
+.contact-form button {
+  background: var(--secondary, #B28F61);
+  color: #FDF7F2;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 4px;
   cursor: pointer;
-  display: block;
-  margin: 0 auto;
+  font-size: 1em;
   transition: background 0.3s ease;
+  margin-top: 10px;
 }
 
-.submit-btn:hover {
-  background: var(--blush-pink);
+.contact-form button:hover {
+  background: var(--tertiary, #D38D6A);
 }
 
-/* Response Message */
-.response-message {
-  margin-top: 20px;
+.success-message {
+  margin-top: 15px;
+  color: #28a745;
+}
+
+.error-message {
+  margin-top: 15px;
+  color: #dc3545;
+}
+
+/* Map styling */
+.contact-map {
   text-align: center;
-  font-size: 1.1em;
-  color: var(--warm-taupe);
+  width: 100%;
+  max-width: 600px;
+}
+
+.contact-map h3 {
+  margin-bottom: 15px;
+  color: var(--accent1, #1F5C63);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .contact-form-container {
+    padding: 20px;
+    margin: 20px;
+  }
+  .contact-map iframe {
+    width: 100%;
+    height: 300px;
+  }
 }
