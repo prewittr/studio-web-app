@@ -3,6 +3,7 @@ const router = express.Router();
 const { bookSession, getMyBookings, getAvailability, cancelSession } = require('../controllers/sessionsController');
 const { authenticateJWT } = require('../middlewares/authMiddleware');
 const { updateSession } = require('../controllers/sessionsController');
+const { checkInBooking } = require('../controllers/sessionsController');
 
 
 
@@ -20,5 +21,8 @@ router.delete('/:id/cancel', authenticateJWT, cancelSession);
 
 // Endpoint to update a booked
 router.put('/:id', authenticateJWT, updateSession);
+
+// Endpoint to checkin to session
+router.post('/checkin', authenticateJWT, checkInBooking);
 
 module.exports = router;

@@ -2,23 +2,25 @@
 
 :root {
   --primary: #F0EAD6;       /* Eggshell (lighter background) */
-  --secondary: #B28F61;     /* Muted Gold (secondary background/accent) */
-  --tertiary: #D38D6A;      /* Warm Peach (accent for even rows, etc.) */
+  --secondary: #B28F61;     /* Muted Gold (secondary accent) */
+  --tertiary: #D38D6A;      /* Warm Peach (accent for even rows) */
   --accent1: #1F5C63;       /* Deep Teal (primary text and headings) */
   --accent2: #A65D2F;       /* Rusty Copper (hover state on buttons) */
   --accent3: #2F6B74;       /* Dark Teal (alternative accent if needed) */
 }
 
+/* Overall container styling */
 .staff-dashboard {
-  padding: 40px;
-  background: var(--primary);
+  padding: 40px 20px;
+  background: linear-gradient(135deg, var(--primary), #ffffff);
   min-height: 100vh;
   text-align: center;
   font-family: 'Montserrat', sans-serif;
 }
 
+/* Heading styles */
 .staff-dashboard h1 {
-  font-size: 2.5em;
+  font-size: 2.8em;
   color: var(--accent1);
   margin-bottom: 20px;
 }
@@ -29,6 +31,7 @@
   margin-bottom: 20px;
 }
 
+/* Dashboard actions */
 .dashboard-actions {
   margin: 20px 0;
 }
@@ -49,11 +52,15 @@
   background: var(--accent2); /* Rusty Copper on hover */
 }
 
+/* Booking table styling */
 .booking-table {
   width: 90%;
   max-width: 1000px;
   margin: 0 auto;
   border-collapse: collapse;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 .booking-table th,
@@ -63,11 +70,27 @@
 }
 
 .booking-table th {
-  background: var(--accent1); /* Deep Teal for header */
+  background: var(--accent1); /* Deep Teal header */
   color: var(--primary);       /* Eggshell text */
   text-align: left;
+  font-weight: 600;
 }
 
 .booking-table tr:nth-child(even) td {
-  background: var(--tertiary); /* Warm Peach for even rows */
+  background: var(--primary); /* Warm Peach for even rows */
+}
+
+.booking-table tr:nth-child(odd) td {
+  background: var(--primary);  /* Eggshell for odd rows */
+}
+
+/* Optional: Hover effect on table rows */
+.booking-table tr:hover td {
+  background: var(--accent3);
+  color: var(--primary);
+  transition: background 0.2s ease;
+}
+
+.booking-table tr.highlight {
+  background-color: #f9e4c8; /* Choose a subtle highlight color that fits your palette */
 }

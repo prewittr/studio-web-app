@@ -14,8 +14,8 @@ const LandingPage = ({ token }) => {
           Your browser does not support the video tag.
         </video>
         <div className="overlay">
-          <h1>Welcome to Diviti Adora Infrared Sauna & Redlight Studio Web App</h1>
-          <p>Your complete solution for managing bookings, payments, and more.</p>
+          <h1>Welcome to Diviti Adora Infrared Sauna & Redlight Studio</h1>
+          <p>Detox, rejuvenate, and restore holistically with every session.</p>
           <Link to={getStartedRoute}>
             <button className="cta-btn">Get Started</button>
           </Link>

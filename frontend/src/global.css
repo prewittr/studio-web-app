@@ -17,7 +17,7 @@
   }
   
   h1, h2, h3, .header {
-    color: var(--accent1);
+    color: var(--secondary);
     font-family: 'Playfair Display', serif;
   }
   

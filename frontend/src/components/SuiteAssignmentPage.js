@@ -107,7 +107,7 @@ const SuiteAssignmentPage = () => {
                   {suite.type === 'redlight'
                     ? `Redlight ${suite.number}`
                     : suite.handicap
-                      ? 'Handicap'
+                      ? 'ADA'
                       : `Sauna ${suite.number}`}
                 </div>
                 <div className="suite-content">

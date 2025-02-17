@@ -246,10 +246,21 @@ exports.getAvailability = async (req, res) => {
       const sessionId = req.params.id;
       const updates = req.body; // Expecting an object with fields like { addGuest, aromatherapy, halotherapy }
     
-      const session = await SessionBooking.findById(sessionId);
-      if (!session || session.user.toString() !== req.user.id) {
-        return res.status(403).json({ message: 'Not authorized to update this session.' });
-      }
+      // Determine the role of the requester.
+    // Assuming req.user is populated and contains a 'role' property.
+    const userRole = req.user.role; 
+
+    let session;
+    if (userRole === 'staff' || userRole === 'admin') {
+      // Allow staff or admin to update any session.
+      session = await SessionBooking.findById(sessionId);
+    } else {
+      // Regular members can only update their own sessions.
+      session = await SessionBooking.findOne({ _id: sessionId, user: req.user.id });
+    }
+    if (!session) {
+      return res.status(404).json({ message: 'Session not found.' });
+    }
     
       const updatedSession = await SessionBooking.findByIdAndUpdate(
         sessionId,
@@ -287,7 +298,14 @@ exports.getAvailability = async (req, res) => {
   exports.cancelSession = async (req, res) => {
     try {
       const bookingId = req.params.id;
-      const booking = await SessionBooking.findById(bookingId);
+          
+    let booking;
+    // Allow staff or admin to cancel any booking; members can cancel only their own.
+    if (req.user.role === 'staff' || req.user.role === 'admin') {
+      booking = await SessionBooking.findById(bookingId);
+    } else {
+      booking = await SessionBooking.findOne({ _id: bookingId, user: req.user.id });
+    }     
       if (!booking) {
         return res.status(404).json({ message: 'Booking not found.' });
       }
@@ -326,3 +344,36 @@ exports.getAvailability = async (req, res) => {
       res.status(500).json({ message: 'Server error while fetching bookings.' });
     }
   };
+
+  // backend/controllers/sessionsController.js
+exports.checkInBooking = async (req, res) => {
+  try {
+    const { bookingId } = req.body;
+    if (!bookingId) {
+      return res.status(400).json({ message: 'Booking ID is required.' });
+    }
+
+    // Find the booking (ensure it belongs to the logged in member)
+    const booking = await SessionBooking.findOne({
+      _id: bookingId,
+      user: req.user.id,
+      status: 'booked'  // only allow check-in for active bookings
+    });
+    
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found or cannot be checked in.' });
+    }
+
+    // Update the booking status to "checked-in"
+    booking.status = 'checked-in';
+    booking.checkedInAt = new Date();
+    await booking.save();
+
+    res.json({ message: 'Successfully checked in!', booking });
+  } catch (error) {
+    console.error('Error checking in booking:', error);
+    res.status(500).json({ message: 'Server error while checking in.' });
+  }
+};
+
+

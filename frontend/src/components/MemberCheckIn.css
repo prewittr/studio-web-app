@@ -1,0 +1,17 @@
+/* MemberCheckIn.css */
+.checkin-btn {
+    padding: 8px 16px;
+    background-color: var(--secondary); /* Muted Gold */
+    color: var(--primary);              /* Eggshell */
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+  }
+  
+  .checkin-btn:hover {
+    background-color: var(--accent1); /* Deep Teal on hover */
+  }
+  

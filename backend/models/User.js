@@ -28,9 +28,16 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
-  contactNumber: { type: String },            
-  membershipType: { type: String },             // (e.g., "Basic", "Premium")
-  membershipStatus: { type: String, default: 'Active' }, // Could be Active, Expired, etc.
+  contactNumber: { 
+    type: String 
+  },            
+  membershipType: { 
+    type: String 
+  },             // (e.g., "Basic", "Premium")
+  membershipStatus: { 
+    type: String, 
+    default: 'Active' 
+  }, // Could be Active, Expired, etc.
   address: {
     street: { type: String },
     city: { type: String },
@@ -41,12 +48,18 @@ const UserSchema = new mongoose.Schema({
   birthday: {
     type: Date,
   },
-  profilePicture: { type: String }, // Will store Base64 data or a URL
+  profilePicture: { 
+    type: String 
+  }, // Will store Base64 data or a URL
   role: {
     type: String,
     enum: ['member', 'staff', 'admin'],
     default: 'member',
   },
+  ada: { // ADA designator; updated only by admin
+    type: Boolean, 
+    default: false 
+  }, 
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', UserSchema);

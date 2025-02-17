@@ -35,7 +35,7 @@
 .overlay {
   position: relative;
   z-index: 1;
-  color: var(--accent1); /* Deep Teal for overlay text */
+  color: var(--secondary); 
   text-align: center;
   padding: 0 20px;
   top: 50%;
@@ -44,9 +44,9 @@
 
 /* Call-to-Action Button */
 .cta-btn {
-  background-color: var(--secondary); /* Muted Gold */
+  background-color: var(--accent1); /* Muted Gold */
   border: none;
-  color: var(--accent1); /* Deep Teal text */
+  color: var(--secondary); /* Deep Teal text */
   font-size: 1.2em;
   padding: 12px 24px;
   border-radius: 5px;

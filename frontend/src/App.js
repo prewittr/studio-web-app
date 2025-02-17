@@ -16,8 +16,10 @@ import HalotherapyInfo from './components/HalotherapyInfo';
 import RedLightTherapyInfo from './components/RedLightTherapyInfo';
 import MembershipOptions from './components/MembershipOptions';
 import MemberLanding from './components/MemberLanding';
+import MemberCheckIn from './components/MemberCheckIn';
 import BookSession from './components/BookSession';
 import StaffDashboard from './components/StaffDashboard';
+import StaffEditBooking from './components/StaffEditBooking';
 import SuiteAssignmentPage from './components/SuiteAssignmentPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
@@ -83,6 +85,7 @@ function App() {
         <Route path="/halotherapy-info" element={<HalotherapyInfo />} />
         <Route path="/redlight-info" element={<RedLightTherapyInfo />} />
         <Route path="/memberships" element={<MembershipOptions />} />
+        <Route path="/staff/edit-booking/:id" element={<StaffEditBooking />} />
         
         {/* Protected routes */}
         <Route
