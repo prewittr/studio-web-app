@@ -345,35 +345,32 @@ exports.getAvailability = async (req, res) => {
     }
   };
 
-  // backend/controllers/sessionsController.js
-exports.checkInBooking = async (req, res) => {
-  try {
-    const { bookingId } = req.body;
-    if (!bookingId) {
-      return res.status(400).json({ message: 'Booking ID is required.' });
+  exports.checkInBooking = async (req, res) => {
+    try {
+      const { bookingId } = req.body;
+      console.log('CheckInBooking called with bookingId:', bookingId);
+      console.log('Authenticated user:', req.user);
+      if (!bookingId) {
+        return res.status(400).json({ message: 'Booking ID is required.' });
+      }
+      const booking = await SessionBooking.findOne({
+        _id: bookingId,
+        user: req.user.id,
+        status: 'booked'
+      });
+      console.log('Booking found:', booking);
+      if (!booking) {
+        return res.status(404).json({ message: 'Booking not found or cannot be checked in.' });
+      }
+      booking.status = 'checked-in';
+      booking.checkedInAt = new Date();
+      await booking.save();
+      res.json({ message: 'Successfully checked in!', booking });
+    } catch (error) {
+      console.error('Error checking in booking:', error);
+      res.status(500).json({ message: 'Server error while checking in.' });
     }
-
-    // Find the booking (ensure it belongs to the logged in member)
-    const booking = await SessionBooking.findOne({
-      _id: bookingId,
-      user: req.user.id,
-      status: 'booked'  // only allow check-in for active bookings
-    });
-    
-    if (!booking) {
-      return res.status(404).json({ message: 'Booking not found or cannot be checked in.' });
-    }
-
-    // Update the booking status to "checked-in"
-    booking.status = 'checked-in';
-    booking.checkedInAt = new Date();
-    await booking.save();
-
-    res.json({ message: 'Successfully checked in!', booking });
-  } catch (error) {
-    console.error('Error checking in booking:', error);
-    res.status(500).json({ message: 'Server error while checking in.' });
-  }
-};
+  };
+  
 
 

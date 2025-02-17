@@ -33,7 +33,7 @@ const SessionBookingSchema = new mongoose.Schema({
   },
   status: { 
     type: String,
-    enum: ['booked', 'cancelled'],
+    enum: ['booked', 'checked-in', 'completed', 'cancelled'],
     default: 'booked'
   },  
   suiteAssignment: {
