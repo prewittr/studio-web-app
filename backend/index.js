@@ -65,6 +65,14 @@ app.use('/api/upload', uploadRoutes);
 const suitesRoutes = require('./routes/suitesRoutes');
 app.use('/api/suites', suitesRoutes);
 
+// Memberships Routes
+const membershipRoutes = require('./routes/membershipsRoutes');
+app.use('/api/memberships', membershipRoutes);
+
+// Stripe Routes
+const stripeRoutes = require('./routes/stripeRoutes');
+app.use('/api/stripe', stripeRoutes); // Mount the Stripe routes under /api/stripe
+
 
 // Sample route
 app.get('/', (req, res) => { 

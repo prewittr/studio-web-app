@@ -108,3 +108,34 @@ exports.updateBooking = async (req, res) => {
     }
   };
   
+  exports.staffCheckInBooking = async (req, res) => {
+    try {
+      const { id } = req.params; // Booking ID from URL
+      // Find the booking by its ID
+      const booking = await SessionBooking.findById(id);
+      if (!booking) {
+        return res.status(404).json({ message: 'Booking not found.' });
+      }
+      // Prevent check-in if the booking is cancelled
+      if (booking.status.toLowerCase().trim() === 'cancelled') {
+        return res.status(400).json({ message: 'Cannot check in a cancelled booking.' });
+      }
+      // Calculate the allowed check-in time (15 minutes before appointment start)
+      const now = new Date();
+      const allowedCheckInTime = new Date(booking.appointmentDate.getTime() - 15 * 60000);
+      if (now < now) {
+        return res.status(400).json({
+          message: `Staff check-in is only allowed within 15 minutes before the session. Check-in available at ${allowedCheckInTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}.`
+        });
+      }
+      // Update the booking status to "checked-in" and record the check-in time
+      booking.status = 'checked-in';
+      booking.checkedInAt = now;
+      await booking.save();
+      res.json({ message: 'Booking checked in successfully!', booking });
+    } catch (error) {
+      console.error('Error during staff check-in:', error);
+      res.status(500).json({ message: 'Server error during staff check-in.' });
+    }
+  };
+

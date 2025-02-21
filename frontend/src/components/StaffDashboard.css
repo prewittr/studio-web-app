@@ -67,10 +67,11 @@
 .booking-table td {
   padding: 12px 15px;
   border: 1px solid var(--secondary);
+  
 }
 
 .booking-table th {
-  background: var(--accent1); /* Deep Teal header */
+  background: var(--accent2); /* Deep Teal header */
   color: var(--primary);       /* Eggshell text */
   text-align: left;
   font-weight: 600;
@@ -94,3 +95,9 @@
 .booking-table tr.highlight {
   background-color: #f9e4c8; /* Choose a subtle highlight color that fits your palette */
 }
+
+.status-timestamp {
+  font-size: 0.85em;
+  color: var(--accent2); /* For example, using the Rusty Copper as an accent */
+}
+

@@ -1,0 +1,27 @@
+/* StaffCheckIn.css */
+
+:root {
+    --primary: #F0EAD6;       /* Eggshell */
+    --secondary: #B28F61;     /* Muted Gold */
+    --tertiary: #D38D6A;      /* Warm Peach */
+    --accent1: #1F5C63;       /* Deep Teal */
+    --accent2: #A65D2F;       /* Rusty Copper */
+    --accent3: #2F6B74;       /* Dark Teal */
+  }
+  
+  .staff-checkin-btn {
+    padding: 8px 16px;
+    background-color: var(--secondary);  /* Muted Gold */
+    color: var(--primary);               /* Eggshell for contrast */
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+  }
+  
+  .staff-checkin-btn:hover {
+    background-color: var(--accent1);  /* Deep Teal on hover */
+  }
+  

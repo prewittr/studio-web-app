@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './NavBar.css';
 
-const NavBar = ({ token, onLogout }) => {
+const NavBar = React.memo(({ token, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -14,29 +14,29 @@ const NavBar = ({ token, onLogout }) => {
     setIsOpen(false);
   };
 
-  // When logout is triggered, call the onLogout callback and navigate to the landing page ("/")
   const handleLogout = () => {
-    onLogout(); // This should remove the token and reset auth state in your parent component
-    navigate("/"); // Redirect to the landing page
+    onLogout();
+    navigate("/");
   };
 
   return (
     <nav className="navbar">
       <div className="navbar__logo">
-        <Link to="/" onClick={handleLinkClick}>Diviti Adora Studios</Link>
+        <Link to="/" onClick={handleLinkClick}>Diviti Adora Infrared and Red Light Studio</Link>
       </div>
-      <div className={`navbar__links ${isOpen ? 'open' : ''}`}>
+      <div className={`navbar__links ${isOpen? 'open': ''}`}>
         <Link to="/" onClick={handleLinkClick}>Home</Link>
         <Link to="/memberships" onClick={handleLinkClick}>Services</Link>
         <Link to="/contact" onClick={handleLinkClick}>Contact</Link>
-        {token ? (
+        {token? (
           <>
             <Link to="/member" onClick={handleLinkClick}>Dashboard</Link>
+            {token && <Link to="/cart">Cart</Link>}
             <button className="logout-btn" onClick={handleLogout}>
               Logout
             </button>
           </>
-        ) : (
+        ): (
           <>
             <Link to="/login" onClick={handleLinkClick}>Login</Link>
             <Link to="/register" onClick={handleLinkClick}>Register</Link>
@@ -50,6 +50,6 @@ const NavBar = ({ token, onLogout }) => {
       </div>
     </nav>
   );
-};
+});
 
 export default NavBar;

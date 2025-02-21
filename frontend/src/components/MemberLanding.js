@@ -164,7 +164,7 @@ const MemberLanding = () => {
                 </div>
                 {booking.status.toLowerCase().trim() === 'booked' && (
                   <div className="checkin-container">
-                    <MemberCheckIn bookingId={booking._id} />
+                    <MemberCheckIn bookingId={booking._id} appointmentDate={booking.appointmentDate} />
                   </div>
                 )}
                 {editingSessionId === booking._id ? (

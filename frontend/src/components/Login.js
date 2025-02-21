@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './Login.css';
 
 const Login = ({ onLogin }) => {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const redirectUrl = queryParams.get('redirect') || '/member';
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -20,7 +23,7 @@ const Login = ({ onLogin }) => {
       const token = response.data.token;
       localStorage.setItem('jwtToken', token);
       onLogin(token);
-      navigate('/member');
+      navigate(redirectUrl);
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || 'Login failed. Please try again.');

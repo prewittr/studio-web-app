@@ -32,8 +32,10 @@ const UserSchema = new mongoose.Schema({
     type: String 
   },            
   membershipType: { 
-    type: String 
-  },             // (e.g., "Basic", "Premium")
+    type: String,
+    enum: ['none', 'infinite_heat', 'balanced_heat', 'ember_heat', 'radiant_glow', 'vip'],
+    default: 'none' 
+  },            
   membershipStatus: { 
     type: String, 
     default: 'Active' 
@@ -44,6 +46,14 @@ const UserSchema = new mongoose.Schema({
     state: { type: String },
     zip: { type: String },
     country: { type: String },
+  },
+  membershipExpiresAt: { 
+    type: Date 
+  }, // optional expiration date if applicable
+  // For tracking if the membership has been paid for:
+  membershipPaid: { 
+    type: Boolean, 
+    default: false
   },
   birthday: {
     type: Date,

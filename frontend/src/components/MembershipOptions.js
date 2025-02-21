@@ -1,7 +1,65 @@
 import React from 'react';
+import { useShoppingCart } from '../context/ShoppingCartContext';
+import { useNavigate } from 'react-router-dom';
 import './MembershipOptions.css';
 
-const MembershipOptions = () => {
+const MembershipOptions = ({ token }) => {
+  const { addItem } = useShoppingCart();
+  const navigate = useNavigate();
+
+  const membershipOptions = [
+    {
+      id: 'infinite_heat',
+      title: 'Infinite Heat Membership',
+      description: 'Unlimited Infrared Sauna Sessions. Enjoy complete freedom with unlimited access to our state-of-the-art infrared saunas.',
+      price: 5000 // Price in cents
+    },
+    {
+      id: 'balanced_heat',
+      title: 'Balanced Heat Membership',
+      description: '8 Infrared Sauna Sessions per month. Experience the perfect balance of relaxation and renewal with eight sessions per month.',
+      price: 3000
+    },
+    {
+      id: 'ember_heat',
+      title: 'Ember Heat Membership',
+      description: '4 Infrared Sauna Sessions per month. Ideal for those seeking occasional relaxation and rejuvenation.',
+      price: 2000
+    },
+    {
+      id: 'radiant_glow',
+      title: 'Radiant Glow Membership',
+      description: 'Unlimited Red Light Bed Sessions. Revitalize your skin and body with unlimited access to our red light therapy beds.',
+      price: 4000
+    },
+    {
+      id: 'vip',
+      title: 'V.I.P.',
+      description: 'Unlimited Infrared and Red Light Bed Sessions. For the ultimate wellness experience, enjoy unlimited access to both therapies.',
+      price: 8000
+    }
+  ];
+
+  const handleAddToCart = (membership) => {
+    if (!token) {
+      // If user is not logged in, redirect to login with a redirect query.
+      alert('Please sign in or register to add items to your cart.');
+      navigate('/login?redirect=/cart');
+      return;
+    }
+    // Add the selected membership to the shopping cart
+    addItem({
+      id: membership.id,
+      type: 'membership',
+      title: membership.title,
+      description: membership.description,
+      price: membership.price
+    });
+    alert(`${membership.title} added to cart!`);
+    // Redirect to the cart page (route "/cart")
+    navigate('/cart');
+  };
+
   return (
     <div className="membership-options">
       <header className="membership-header">
@@ -9,31 +67,16 @@ const MembershipOptions = () => {
         <p>Choose the perfect membership to match your wellness goals.</p>
       </header>
       <div className="membership-cards">
-        <div id="infinite-heat" className="membership-card">
-          <h2>Infinite Heat Membership</h2>
-          <p>Unlimited Infrared Sauna Sessions</p>
-          <p>Enjoy complete freedom with unlimited access to our state-of-the-art infrared saunas.</p>
-        </div>
-        <div id="balanced-heat" className="membership-card">
-          <h2>Balanced Heat Membership</h2>
-          <p>8 Infrared Sauna Sessions per month</p>
-          <p>Experience the perfect balance of relaxation and renewal with eight sessions per month.</p>
-        </div>
-        <div id="ember-heat" className="membership-card">
-          <h2>Ember Heat Membership</h2>
-          <p>4 Infrared Sauna Sessions per month</p>
-          <p>Ideal for those seeking occasional relaxation and rejuvenation.</p>
-        </div>
-        <div id="radiant-glow" className="membership-card">
-          <h2>Radiant Glow Membership</h2>
-          <p>Unlimited Red Light Bed Sessions</p>
-          <p>Revitalize your skin and body with unlimited access to our red light therapy beds.</p>
-        </div>
-        <div id="vip" className="membership-card">
-          <h2>V.I.P.</h2>
-          <p>Unlimited Infrared and Red Light Bed Sessions</p>
-          <p>For the ultimate wellness experience, enjoy unlimited access to both infrared and red light therapies.</p>
-        </div>
+        {membershipOptions.map((membership) => (
+          <div key={membership.id} id={membership.id} className="membership-card">
+            <h2>{membership.title}</h2>
+            <p>{membership.description}</p>
+            <p>Price: ${(membership.price / 100).toFixed(2)}</p>
+            <button onClick={() => handleAddToCart(membership)}>
+              Add to Cart
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );

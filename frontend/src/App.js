@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import NavBar from './components/NavBar';
+import { ShoppingCartProvider } from './context/ShoppingCartContext';
 import LandingPage from './components/LandingPage';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -9,6 +10,7 @@ import MemberProfile from './components/MemberProfile';
 import Contact from './components/Contact';
 import Bookings from './components/Bookings';
 import Payment from './components/Payment';
+import Checkout from './components/Checkout';
 import Features from './components/Features';
 import InfraredSaunaInfo from './components/InfraredSaunaInfo';
 import ChromotherapyInfo from './components/ChromotherapyInfo';
@@ -17,12 +19,15 @@ import RedLightTherapyInfo from './components/RedLightTherapyInfo';
 import MembershipOptions from './components/MembershipOptions';
 import MemberLanding from './components/MemberLanding';
 import MemberCheckIn from './components/MemberCheckIn';
+import CartPage from './components/CartPage';
 import BookSession from './components/BookSession';
 import StaffDashboard from './components/StaffDashboard';
 import StaffEditBooking from './components/StaffEditBooking';
 import SuiteAssignmentPage from './components/SuiteAssignmentPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
+import Success from './components/Success';
+import Cancel from './components/Cancel';
 
 
 function App() {
@@ -31,6 +36,7 @@ function App() {
 
   // Fetch the user profile if a token is available
   useEffect(() => {
+    console.log("useEffect running, token:", token);
     if (token) {
       axios
         .get('http://localhost:5000/api/profile', {
@@ -55,6 +61,7 @@ function App() {
   };
 
   return (
+    <ShoppingCartProvider>
     <Router>
       <NavBar token={token} onLogout={handleLogout} />
       <Routes>
@@ -76,8 +83,10 @@ function App() {
           }
         />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/features" element={<Features />} />
         <Route path="/profile" element={<MemberProfile />} />
         <Route path="/infrared-info" element={<InfraredSaunaInfo />} />
@@ -86,6 +95,9 @@ function App() {
         <Route path="/redlight-info" element={<RedLightTherapyInfo />} />
         <Route path="/memberships" element={<MembershipOptions />} />
         <Route path="/staff/edit-booking/:id" element={<StaffEditBooking />} />
+        <Route path="/memberships" element={<MembershipOptions token={token} />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} />
         
         {/* Protected routes */}
         <Route
@@ -136,6 +148,7 @@ function App() {
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
+    </ShoppingCartProvider>
   );
 }
 

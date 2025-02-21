@@ -1,0 +1,31 @@
+/* Checkout.css */
+
+.checkout-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #F0EAD6;  /* Eggshell background */
+    font-family: 'Montserrat', sans-serif;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .checkout-button {
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #B28F61, #D38D6A); /* Muted Gold to Warm Peach */
+    border: none;
+    border-radius: 8px;
+    color: #1F5C63; /* Deep Teal for text */
+    font-size: 1.2em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .checkout-button:hover {
+    background: linear-gradient(135deg, #D38D6A, #B28F61);
+    transform: scale(1.05);
+  }
+  

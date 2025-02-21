@@ -295,44 +295,45 @@ exports.getAvailability = async (req, res) => {
     }
   };
   
-  exports.cancelSession = async (req, res) => {
-    try {
-      const bookingId = req.params.id;
-          
-    let booking;
-    // Allow staff or admin to cancel any booking; members can cancel only their own.
-    if (req.user.role === 'staff' || req.user.role === 'admin') {
-      booking = await SessionBooking.findById(bookingId);
-    } else {
-      booking = await SessionBooking.findOne({ _id: bookingId, user: req.user.id });
-    }     
-      if (!booking) {
-        return res.status(404).json({ message: 'Booking not found.' });
-      }
-      if (booking.user.toString() !== req.user.id) {
-        return res.status(403).json({ message: 'Not authorized to cancel this booking.' });
-      }
-      const now = new Date();
-      if (booking.appointmentDate < now) {
-        return res.status(400).json({ message: 'Cannot cancel a session that has already started or passed.' });
-      }
-      const timeDiffMs = booking.appointmentDate.getTime() - now.getTime();
-      const twoHoursMs = 2 * 60 * 60 * 1000;
-      let warningMessage = '';
-      if (timeDiffMs < twoHoursMs) {
-        warningMessage = 'Warning: Cancellation less than 2 hours prior will incur a cancellation fee.';
-        booking.cancellationFeeApplied = true;
-      }
-      booking.status = 'cancelled';
-      booking.cancelledAt = now;
-      await booking.save();
-      res.status(200).json({ message: `Session cancelled successfully. ${warningMessage}` });
-    } catch (error) {
-      console.error('Error cancelling session:', error);
-      res.status(500).json({ message: 'Server error while cancelling session.' });
+  // backend/controllers/sessionsController.js
+exports.cancelSession = async (req, res) => {
+  try {
+    const bookingId = req.params.id;
+    const booking = await SessionBooking.findById(bookingId);
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found.' });
     }
-  };
-  
+    if (booking.user.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Not authorized to cancel this booking.' });
+    }
+    const now = new Date();
+    if (booking.appointmentDate < now) {
+      return res.status(400).json({ message: 'Cannot cancel a session that has already started or passed.' });
+    }
+    
+    // Calculate the time difference between now and the session start.
+    const timeDiffMs = booking.appointmentDate.getTime() - now.getTime();
+    const twoHoursMs = 2 * 60 * 60 * 1000;
+    
+    // If cancellation is within 2 hours of the session start, flag a cancellation fee.
+    if (timeDiffMs < twoHoursMs) {
+      booking.cancellationFeeApplied = true;
+    }
+    
+    booking.status = 'cancelled';
+    booking.cancelledAt = now;
+    
+    await booking.save();
+    
+    res.status(200).json({ 
+      message: `Session cancelled successfully.${booking.cancellationFeeApplied ? ' A cancellation fee has been applied.' : ''}`,
+      booking 
+    });
+  } catch (error) {
+    console.error('Error cancelling session:', error);
+    res.status(500).json({ message: 'Server error while cancelling session.' });
+  }
+};  
   exports.getAllBookings = async (req, res) => {
     try {
       const bookings = await SessionBooking.find({})
@@ -353,6 +354,7 @@ exports.getAvailability = async (req, res) => {
       if (!bookingId) {
         return res.status(400).json({ message: 'Booking ID is required.' });
       }
+      // Find the booking for the current user
       const booking = await SessionBooking.findOne({
         _id: bookingId,
         user: req.user.id,
@@ -362,6 +364,14 @@ exports.getAvailability = async (req, res) => {
       if (!booking) {
         return res.status(404).json({ message: 'Booking not found or cannot be checked in.' });
       }
+      const now = new Date();
+    // Calculate the allowed check-in time (15 minutes before the appointment start)
+    const allowedCheckInTime = new Date(booking.appointmentDate.getTime() - 15 * 60000);
+    if (now < allowedCheckInTime) {
+      return res.status(400).json({ 
+        message: 'You can only check in within 15 minutes before your session start time.' 
+      });
+    }
       booking.status = 'checked-in';
       booking.checkedInAt = new Date();
       await booking.save();
@@ -370,7 +380,45 @@ exports.getAvailability = async (req, res) => {
       console.error('Error checking in booking:', error);
       res.status(500).json({ message: 'Server error while checking in.' });
     }
-  };
-  
+  };  
+
+exports.updateSessionStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, comment } = req.body; // Accept a new status and an optional comment.
+    
+    // Validate that the new status is allowed.
+    const allowedStatuses = ['booked', 'checked-in', 'in-progress', 'completed', 'cancelled'];
+    if (!allowedStatuses.includes(status)) {
+      return res.status(400).json({ message: 'Invalid status provided.' });
+    }
+
+    // Optionally, record the manual override in an audit log or directly on the booking
+    const updates = { status };
+    if (comment) {
+      updates.manualStatusComment = comment; // assuming you add a field for this
+    }
+    // For some statuses, you might also want to update a timestamp:
+    if (status === 'checked-in') {
+      updates.checkedInAt = new Date();
+    } else if (status === 'in-progress') {
+      updates.startedAt = new Date();
+    } else if (status === 'completed') {
+      updates.completedAt = new Date();
+    }
+
+    const updatedSession = await SessionBooking.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
+    if (!updatedSession) {
+      return res.status(404).json({ message: 'Session not found.' });
+    }
+    res.json({ message: 'Session status updated successfully!', booking: updatedSession });
+  } catch (error) {
+    console.error('Error updating session status:', error);
+    res.status(500).json({ message: 'Server error while updating session status.' });
+  }
+};
 
 

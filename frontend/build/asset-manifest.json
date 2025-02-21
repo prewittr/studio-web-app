@@ -1,18 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.49412675.css",
-    "main.js": "/static/js/main.a24ac496.js",
-    "static/media/blue-monday-telephone.jpg": "/static/media/blue-monday-telephone.1b4735c5d6529d153f4f.jpg",
+    "main.css": "/static/css/main.6c670092.css",
+    "main.js": "/static/js/main.6d6e2c69.js",
     "static/media/chromotherapy2.jpg": "/static/media/chromotherapy2.2e36a8678ba031af40ca.jpg",
     "static/media/redbed3.jpeg": "/static/media/redbed3.2c95423f492d88765de5.jpeg",
     "static/media/sauna2.jpg": "/static/media/sauna2.4464e520ee9eebe13832.jpg",
     "static/media/salt1.jpg": "/static/media/salt1.562f2a1bbcf747c1956b.jpg",
     "index.html": "/index.html",
-    "main.49412675.css.map": "/static/css/main.49412675.css.map",
-    "main.a24ac496.js.map": "/static/js/main.a24ac496.js.map"
+    "main.6c670092.css.map": "/static/css/main.6c670092.css.map",
+    "main.6d6e2c69.js.map": "/static/js/main.6d6e2c69.js.map"
   },
   "entrypoints": [
-    "static/css/main.49412675.css",
-    "static/js/main.a24ac496.js"
+    "static/css/main.6c670092.css",
+    "static/js/main.6d6e2c69.js"
   ]
 }

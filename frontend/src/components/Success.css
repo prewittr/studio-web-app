@@ -1,0 +1,19 @@
+/* Success.css */
+.success-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #FDF7F2; /* Ivory White */
+    font-family: 'Montserrat', sans-serif;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .success-container h1 {
+    font-size: 2.5rem;
+    color: #04804c; 
+    margin: 0;
+  }
+  

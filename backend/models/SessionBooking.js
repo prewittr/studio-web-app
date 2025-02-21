@@ -33,9 +33,12 @@ const SessionBookingSchema = new mongoose.Schema({
   },
   status: { 
     type: String,
-    enum: ['booked', 'checked-in', 'completed', 'cancelled'],
+    enum: ['booked', 'checked-in', 'in-progress', 'completed', 'cancelled'],
     default: 'booked'
-  },  
+  },
+  checkedInAt: { type: Date },
+  startedAt: { type: Date },
+  completedAt: { type: Date },  
   suiteAssignment: {
     type: {
       type: String, // 'sauna' or 'redlight'
