@@ -5,20 +5,16 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
 
 const createCheckoutSession = async (req, res) => {
   try {
+    const { priceId } = req.body; // Get the priceId from the request body
+
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
-          price_data: { 
-            currency: 'usd',
-            product_data: {
-              name: 'T-shirt', 
-            },
-            unit_amount: 2000,
-          },
+          price: priceId, // Use the priceId directly
           quantity: 1,
         },
       ],
-      mode: 'payment',
+      mode: 'subscription',
       success_url: `${req.headers.origin}/success`, 
       cancel_url: `${req.headers.origin}/cancel`, 
     });
