@@ -71,7 +71,8 @@ app.use('/api/memberships', membershipRoutes);
 
 // Stripe Routes
 const stripeRoutes = require('./routes/stripeRoutes');
-app.use('/api/stripe', stripeRoutes); // Mount the Stripe routes under /api/stripe
+const { authenticateJWT } = require('.//middlewares/authMiddleware'); 
+app.use('/api/stripe', authenticateJWT, stripeRoutes); // Mount the Stripe routes under /api/stripe
 
 
 // Sample route

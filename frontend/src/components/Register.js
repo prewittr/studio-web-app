@@ -27,7 +27,7 @@ const Register = () => {
       const response = await axios.post('http://localhost:5000/api/auth/register', formData);
       setMessage(response.data.message);
       setTimeout(() => {
-        navigate('/login');
+        navigate("/login", { state: { from: "/cart" } });
       }, 1500);
     } catch (err) {
       console.error(err);

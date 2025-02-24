@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { jwtDecode } from 'jwt-decode';
 import './MemberProfile.css';
 
 const MemberProfile = () => {
+  const navigate = useNavigate(); // Define navigate
   const token = localStorage.getItem('jwtToken'); 
   const [profile, setProfile] = useState({
     firstName: '',
@@ -106,6 +109,40 @@ const MemberProfile = () => {
     } catch (err) {
       console.error('Update profile error:', err);
       setError(err.response?.data?.message || 'Failed to update profile.');
+    }
+  };
+
+  const handleOpenPortal = async () => {
+    try {
+      const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      // Handle the case where the user is not logged in
+      alert('Please log in to access the customer portal.');
+      navigate('/login?redirect=/profile'); // Redirect to login, then back to profile
+      return;
+    }
+
+    // Decode the JWT to get the user ID
+    const decodedToken = jwtDecode(token); // Make sure to install jwt-decode: npm install jwt-decode
+    const userId = decodedToken.id; // Assuming your JWT has a "id" field with the user ID
+
+    const response = await fetch('http://localhost:5000/api/stripe/create-portal-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId }),
+    });
+
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Server Error:", response.status, errorData);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const { url } = await response.json();
+      window.location.href = url; // Redirect to the portal URL
+    } catch (error) {
+      console.error('Error opening portal:', error);
     }
   };
 
@@ -263,6 +300,7 @@ const MemberProfile = () => {
           />
         </div>
         <button type="submit" className="save-btn">Save Profile</button>
+        <button onClick={handleOpenPortal}>Manage Billing</button>
       </form>
     </div>
   );

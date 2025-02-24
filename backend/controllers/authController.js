@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // Require Stripe
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -23,7 +24,11 @@ exports.register = async (req, res) => {
     // Hash the password.
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    
+    // Create a Stripe Customer
+    const stripeCustomer = await stripe.customers.create({
+      email, // Use the user's email address
+    });
+
     // Create a new user, defaulting role to "member".
     const user = new User({
       username,
@@ -31,7 +36,8 @@ exports.register = async (req, res) => {
       firstName,
       lastName,
       email,
-      role: 'member'
+      role: 'member',
+      stripeCustomerId: stripeCustomer.id // Store the Stripe customer ID
     });
 
     await user.save();
@@ -61,7 +67,7 @@ exports.login = async (req, res) => {
   
       // Create JWT including username
       const token = jwt.sign(
-        { id: user._id, username: user.username, role: user.role },
+        { id: user._id, username: user.username, role: user.role, stripeCustomerId: user.stripeCustomerId },
         process.env.JWT_SECRET,
         { expiresIn: '1h' }
       );

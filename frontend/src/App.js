@@ -1,4 +1,6 @@
+import { useAuth } from './components/AuthContext'; // Import useAuth
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import NavBar from './components/NavBar';
@@ -29,24 +31,27 @@ import PublicRoute from './components/PublicRoute';
 import Success from './components/Success';
 import Cancel from './components/Cancel';
 
-
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('jwtToken') || '');
+  // Use a consistent key "jwtToken" when accessing localStorage.
+  const { token, initialized, login, logout } = useAuth(); // Get initialized from AuthContext
+  //const [token, setToken] = useState(localStorage.getItem("jwtToken") || "");
   const [userProfile, setUserProfile] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  // Fetch the user profile if a token is available
+  // Fetch the user profile if a token is available.
   useEffect(() => {
-    console.log("useEffect running, token:", token);
+    console.log("DEBUG::::useEffect running, token:", token);
     if (token) {
       axios
-        .get('http://localhost:5000/api/profile', {
+        .get("http://localhost:5000/api/profile", {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           setUserProfile(response.data);
         })
         .catch((error) => {
-          console.error('Error fetching user profile:', error);
+          console.error("Error fetching user profile:", error);
           setUserProfile(null);
         });
     } else {
@@ -54,32 +59,53 @@ function App() {
     }
   }, [token]);
 
+  const handleLogin = (token) => {
+    console.log("DEBUG::::handleLogin:::, token:", token);
+    login({ username: 'user' }, token); // Use login from useAuth
+    // setToken(token);
+    // Use the same key "jwtToken" for storing the token.
+    localStorage.setItem("jwtToken", token);
+
+    console.log("DEBUG::Location state from:", location.state?.from);
+
+    if (location.state?.from === "/cart") {
+      navigate("/cart");
+    } else {
+      navigate("/member");
+    }
+  };
+
   const handleLogout = () => {
-    localStorage.removeItem('jwtToken');
-    setToken('');
+    logout(); // Use logout from useAuth
+    // setToken("");
+    localStorage.removeItem("jwtToken");
     setUserProfile(null);
   };
 
+  console.log('DEBUG::Token in App.js:', token);
+
   return (
-    <ShoppingCartProvider>
-    <Router>
-      <NavBar token={token} onLogout={handleLogout} />
+    // Pass token and setToken into ShoppingCartProvider for shared state.
+    <ShoppingCartProvider token={token} >
+      <NavBar onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<LandingPage token={token} />} />
         <Route
           path="/login"
           element={
-            <PublicRoute token={token}>
-              <Login onLogin={(t) => setToken(t)} />
-            </PublicRoute>
+            <PublicRoute token={token} initialized={initialized}> 
+        <Login onLogin={handleLogin} />
+      </PublicRoute>
+
           }
         />
         <Route
           path="/register"
           element={
-            <PublicRoute token={token}>
-              <Register />
-            </PublicRoute>
+            <PublicRoute token={token} initialized={initialized}> 
+        <Register />
+      </PublicRoute>
+
           }
         />
         <Route path="/contact" element={<Contact />} />
@@ -93,7 +119,6 @@ function App() {
         <Route path="/chromotherapy-info" element={<ChromotherapyInfo />} />
         <Route path="/halotherapy-info" element={<HalotherapyInfo />} />
         <Route path="/redlight-info" element={<RedLightTherapyInfo />} />
-        <Route path="/memberships" element={<MembershipOptions />} />
         <Route path="/staff/edit-booking/:id" element={<StaffEditBooking />} />
         <Route path="/memberships" element={<MembershipOptions token={token} />} />
         <Route path="/success" element={<Success />} />
@@ -147,7 +172,6 @@ function App() {
         {/* Redirect unknown routes */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-    </Router>
     </ShoppingCartProvider>
   );
 }

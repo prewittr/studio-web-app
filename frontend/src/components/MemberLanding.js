@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import MemberCheckIn from './MemberCheckIn'; // Make sure the filename matches exactly!
 import './MemberLanding.css';
-
 const MemberLanding = () => {
   const [bookings, setBookings] = useState([]);
   const [membershipStatus, setMembershipStatus] = useState('Active');
@@ -17,6 +16,7 @@ const MemberLanding = () => {
 
   // Fetch booked sessions
   useEffect(() => {
+    console.log("DEBUG::MemberLanding::Token in useEffect (fetchBookings):", token);
     const fetchBookings = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/sessions/myBookings', {
@@ -24,6 +24,7 @@ const MemberLanding = () => {
         });
         setBookings(response.data.bookings);
         setMembershipStatus(response.data.membershipStatus || 'Active');
+        console.log("DEBUG::MemberLanding::Bookings fetched:", response.data.bookings);
       } catch (error) {
         console.error('Error fetching bookings:', error);
       }
@@ -33,12 +34,14 @@ const MemberLanding = () => {
 
   // Fetch profile data
   useEffect(() => {
+    console.log("DEBUG::MemberLanding::Token in useEffect (fetchProfile):", token);
     const fetchProfile = async () => {
       try {
         const res = await axios.get('http://localhost:5000/api/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setProfile(res.data);
+        console.log("DEBUG::MemberLanding::Profile fetched:", res.data);
       } catch (error) {
         console.error('Error fetching profile:', error);
       } finally {

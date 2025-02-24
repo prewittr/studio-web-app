@@ -1,75 +1,90 @@
 /* CartPage.css */
+
 .cart-page {
   max-width: 800px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: #F0EAD6; /* Eggshell */
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 60px auto;
+  padding: 40px 30px;
   font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, #F0EAD6, #FFF8F0); /* Subtle gradient using Eggshell tones */
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   color: #1F5C63; /* Deep Teal */
 }
 
 .cart-page h1 {
-  text-align: center;
-  margin-bottom: 20px;
   font-size: 2.5em;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #1F5C63;
 }
 
-.cart-items {
+.cart-page ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart-page li {
+  border: 1px solid #B28F61; /* Muted Gold */
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background: #fff;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.cart-item {
-  padding: 15px;
-  border: 1px solid #B28F61; /* Muted Gold */
-  border-radius: 4px;
-  background-color: #fff;
+.cart-page li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.cart-item h2 {
-  margin: 0 0 10px;
-  font-size: 1.5em;
+.cart-page li h3 {
+  font-size: 1.4em;
+  margin-bottom: 8px;
 }
 
-.cart-item p {
-  margin: 5px 0;
+.cart-page li p {
+  margin: 0;
+  font-size: 1em;
 }
 
-.cart-page h3 {
-  text-align: right;
-  margin-top: 20px;
-  font-size: 1.2em;
-}
-
-.cart-actions {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.cart-actions button {
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #B28F61, #D38D6A);
+.cart-page li button {
+  align-self: flex-start;
+  background: #B28F61; /* Muted Gold */
+  color: #F0EAD6; /* Eggshell */
   border: none;
-  border-radius: 4px;
-  font-size: 1.1em;
-  color: #F0EAD6;
+  border-radius: 6px;
+  padding: 10px 20px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  font-size: 0.95em;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.cart-actions button:hover {
-  background: linear-gradient(135deg, #D38D6A, #B28F61);
+.cart-page li button:hover {
+  background: #A65D2F; /* Rusty Copper */
+  transform: scale(1.03);
 }
 
-.cart-actions a {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  font-size: 1.1em;
-  color: #1F5C63;
+.checkout-button {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 40px auto 0;
+  padding: 15px 30px;
+  background: #1F5C63; /* Deep Teal */
+  color: #F0EAD6; /* Eggshell */
+  font-size: 1.2em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  text-align: center;
+}
+
+.checkout-button:hover {
+  background: #2F6B74; /* Dark Teal */
+  transform: translateY(-2px);
 }
