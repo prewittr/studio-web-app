@@ -164,12 +164,7 @@ const MemberLanding = () => {
                       <p>Halotherapy: {booking.halotherapy ? 'Yes' : 'No'}</p>
                     </div>
                   )}
-                </div>
-                {booking.status.toLowerCase().trim() === 'booked' && (
-                  <div className="checkin-container">
-                    <MemberCheckIn bookingId={booking._id} appointmentDate={booking.appointmentDate} />
-                  </div>
-                )}
+                </div>                
                 {editingSessionId === booking._id ? (
                   <div className="edit-session-form">
                     {booking.sessionType === 'infrared' ? (
@@ -233,15 +228,20 @@ const MemberLanding = () => {
                   </div>
                 ) : (
                   <div className="session-actions">
-                    {booking.status.toLowerCase().trim() !== 'cancelled' && (
-                      <button
-                        onClick={() => handleEditSession(booking)}
-                        className="edit-btn"
-                      >
-                        Edit Booking
-                      </button>
-                    )}
-                  </div>
+  {booking.status.toLowerCase().trim() === 'booked' && (
+    <div className="checkin-container">
+      <MemberCheckIn bookingId={booking._id} appointmentDate={booking.appointmentDate} />
+    </div>
+  )}
+  {booking.status.toLowerCase().trim() !== 'cancelled' && (
+    <button
+      onClick={() => handleEditSession(booking)}
+      className="edit-btn"
+    >
+      Edit Booking
+    </button>
+  )}
+</div>
                 )}
               </li>
             );
@@ -284,7 +284,8 @@ const MemberLanding = () => {
         <div className="header-content">
           <h1>Welcome, {username}!</h1>
           <p>
-            Membership Status: <strong>{membershipStatus}</strong>
+            Membership Type:<strong> {profile.membershipType}</strong> </p>
+           <p> Membership Status: <strong>{membershipStatus}</strong>
           </p>
         </div>
       </header>

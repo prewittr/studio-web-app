@@ -51,7 +51,7 @@
 }
 
 .tab-buttons button {
-  padding: 6px 12px;
+  padding: 10px 16px;
   border: 1px solid var(--accent1);
   border-bottom: none;
   background: var(--secondary);
@@ -62,6 +62,8 @@
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   margin-left: 4px;
+  min-width: 120px;    /* Ensures buttons align even if text varies */
+  text-align: center;
 }
 
 .tab-buttons button:first-child {
@@ -149,7 +151,15 @@
 
 /* Session Actions & Inline Edit Form */
 .session-actions {
-  text-align: right;
+  display: flex;
+    justify-content: center;    /* Center buttons */
+    gap: 10px;    /* Ensures even spacing */
+    margin-top: 10px;
+}
+
+.session-actions button {
+  padding: 8px 14px;   /* Uniform padding */
+  min-width: 110px;   /* Keeps button widths aligned */
 }
 
 .edit-btn,
@@ -219,8 +229,9 @@
 
 .edit-buttons {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;    /* Wrap buttons on smaller screens */
 }
 
 /* Responsive Adjustments */

@@ -31,15 +31,16 @@ const UserSchema = new mongoose.Schema({
   contactNumber: { 
     type: String 
   },            
-  membershipType: { 
-    type: String,
-    enum: ['none', 'infinite_heat', 'balanced_heat', 'ember_heat', 'radiant_glow', 'vip'],
-    default: 'none' 
-  },            
-  membershipStatus: { 
-    type: String, 
-    default: 'Active' 
-  }, // Could be Active, Expired, etc.
+ membershipType: {
+  type: String,
+  enum: ['none', 'infinite_heat', 'balanced_heat', 'ember_heat', 'radiant_glow', 'vip'],
+  default: 'none'
+},
+membershipStatus: {
+  type: String,
+  enum: ['None', 'active', 'trialing', 'past_due', 'canceled', 'unpaid'], // Add other Stripe subscription statuses as needed
+  default: 'None'
+},
   address: {
     street: { type: String },
     city: { type: String },

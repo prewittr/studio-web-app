@@ -6,6 +6,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // Require Stri
 const JWT_SECRET = process.env.JWT_SECRET;
 
 exports.register = async (req, res) => {
+  let stripeCustomer; // Declare stripeCustomer here
   try {
     // Extract only the fields we need from the request body.
     const { username, password, firstName, lastName, email } = req.body;
@@ -24,9 +25,18 @@ exports.register = async (req, res) => {
     // Hash the password.
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a Stripe Customer
-    const stripeCustomer = await stripe.customers.create({
-      email, // Use the user's email address
+    // Create Stripe customer
+    stripeCustomer = await stripe.customers.create({
+      name: `${req.body.firstName} ${req.body.lastName}`, // Use the user's full name
+      email: req.body.email,
+      address: {
+        line1: req.body.street, // Assuming 'street' is the field for street address
+        city: req.body.city,
+        state: req.body.state,
+        postal_code: req.body.zip, // Assuming 'zip' is the field for postal code
+        country: req.body.country
+      }
+      // You can add shipping address here if you collect it separately
     });
 
     // Create a new user, defaulting role to "member".

@@ -9,7 +9,12 @@ const Register = () => {
     password: '',
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: ''
   });
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
@@ -60,7 +65,27 @@ const Register = () => {
         <label>
           Password:
           <input type="password" name="password" value={formData.password} onChange={handleChange} required />
-        </label>        
+        </label>
+        <label>
+          Street:
+          <input type="text" name="street" value={formData.street} onChange={handleChange} required />
+        </label>
+        <label>
+          City:
+          <input type="text" name="city" value={formData.city} onChange={handleChange} required />
+        </label>
+        <label>
+          State:
+          <input type="text" name="state" value={formData.state} onChange={handleChange} required />
+        </label>
+        <label>
+          Zip:
+          <input type="text" name="zip" value={formData.zip} onChange={handleChange} required />
+        </label>
+        <label>
+          Country:
+          <input type="text" name="country" value={formData.country} onChange={handleChange} required />
+        </label>
         <button type="submit">Register</button>
       </form>
       <p>

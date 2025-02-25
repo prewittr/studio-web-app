@@ -37,6 +37,8 @@ const MemberProfile = () => {
         });
         const data = response.data;
         setProfile({
+          membershipType: data.membershipType || 'None',
+          membershipStatus: data.membershipStatus || 'None',
           firstName: data.firstName || '',
           lastName: data.lastName || '',
           preferredName: data.preferredName || '',
@@ -126,13 +128,13 @@ const MemberProfile = () => {
     const decodedToken = jwtDecode(token); // Make sure to install jwt-decode: npm install jwt-decode
     const userId = decodedToken.id; // Assuming your JWT has a "id" field with the user ID
 
-    const response = await fetch('http://localhost:5000/api/stripe/create-portal-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId }),
+    const response = await axios.post('http://localhost:5000/api/stripe/create-portal-session', { userId: decodedToken.id }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
-
-  
+      // Access the portal URL directly from response.data
+    window.location.href = response.data.url; // Redirect to the portal URL  
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Server Error:", response.status, errorData);

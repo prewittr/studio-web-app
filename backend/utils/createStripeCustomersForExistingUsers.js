@@ -1,7 +1,21 @@
-require('dotenv').config(); // Load environment variables from.env
-const User = require('./models/User');
-//... rest of your code...const User = require('./models/User');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+require('dotenv').config({ path: __dirname + '/../.env' });
+const mongoose = require('mongoose');
+const User = require('../models/User');
+console.log('Stripe API Key:', process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // Require Stripe
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => {
+  console.log('Connected to MongoDB');
+  createStripeCustomersForExistingUsers(); // Only call your function after connection is established
+})
+.catch((error) => {
+  console.error('Error connecting to MongoDB:', error);
+});
 
 const createStripeCustomersForExistingUsers = async () => {    
   try {

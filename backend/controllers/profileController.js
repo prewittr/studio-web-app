@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // GET /api/profile
 exports.getProfile = async (req, res) => {
@@ -8,6 +9,20 @@ exports.getProfile = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found.' });
     }
+
+    // Fetch Stripe subscriptions
+    const subscriptions = await stripe.subscriptions.list({
+      customer: user.stripeCustomerId,
+      status: 'all', // You might want to filter by 'active' if needed
+    });
+
+    // Determine membership status
+    let membershipStatus = 'None'; // Default if no subscription found
+    if (subscriptions.data.length > 0) {
+      const latestSubscription = subscriptions.data;
+      membershipStatus = latestSubscription.status; // 'active', 'trialing', 'past_due', etc.
+    }
+    
     res.json(user);
   } catch (error) {
     console.error("Error fetching profile:", error);
