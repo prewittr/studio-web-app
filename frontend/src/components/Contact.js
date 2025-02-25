@@ -25,7 +25,7 @@ const Contact = () => {
     setError('');
     try {
       // Post the contact data to your API endpoint (adjust URL as needed)
-      // await axios.post('http://localhost:5000/api/contact', formData);
+      // await axios.post('${process.env.REACT_APP_API_BASE_URL}/contact', formData);
       // For now, we'll simulate a successful submission:
       setResponseMessage("Thank you for contacting us! We'll get back to you soon.");
       setFormData({

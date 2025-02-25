@@ -12,7 +12,7 @@ const Checkout = () => {
     console.log("Stripe loaded:", stripe);
     try {
       console.log("Fetching checkout session...");
-      const response = await fetch('${process.env.REACT_APP_API_BASE_URL}/stripe/create-checkout-session', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/stripe/create-checkout-session`, {
         method: 'POST',
       });
       console.log("Response:", response);

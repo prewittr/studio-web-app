@@ -17,7 +17,7 @@ const StaffDashboard = () => {
   // Function to fetch bookings from the backend.
   const fetchBookings = useCallback(async () => {
     try {
-      const response = await axios.get('${process.env.REACT_APP_API_BASE_URL}/staff/bookings', {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/staff/bookings`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookings(response.data.bookings);

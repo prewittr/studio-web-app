@@ -19,7 +19,7 @@ const MemberLanding = () => {
     console.log("DEBUG::MemberLanding::Token in useEffect (fetchBookings):", token);
     const fetchBookings = async () => {
       try {
-        const response = await axios.get('${process.env.REACT_APP_API_BASE_URL}/sessions/myBookings', {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/sessions/myBookings`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setBookings(response.data.bookings);
@@ -37,7 +37,7 @@ const MemberLanding = () => {
     console.log("DEBUG::MemberLanding::Token in useEffect (fetchProfile):", token);
     const fetchProfile = async () => {
       try {
-        const res = await axios.get('${process.env.REACT_APP_API_BASE_URL}/profile', {
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setProfile(res.data);

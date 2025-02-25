@@ -69,8 +69,8 @@ const StaffEditBooking = () => {
         const dateString = `${year}-${month}-${day}`;
         const endpoint =
           sessionType === 'infrared'
-            ? '${process.env.REACT_APP_API_BASE_URL}/suites/sauna'
-            : '${process.env.REACT_APP_API_BASE_URL}/suites/redlight';
+            ? `${process.env.REACT_APP_API_BASE_URL}/suites/sauna`
+            : `${process.env.REACT_APP_API_BASE_URL}/suites/redlight`;
         const response = await axios.get(endpoint, {
           headers: { Authorization: `Bearer ${token}` },
           params: { date: dateString, time: appointmentDate.toISOString() }

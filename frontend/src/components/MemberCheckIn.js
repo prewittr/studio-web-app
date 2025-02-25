@@ -18,7 +18,7 @@ const MemberCheckIn = ({ bookingId, appointmentDate }) => {
   const handleCheckIn = async () => {
     try {
       const response = await axios.post(
-        '${process.env.REACT_APP_API_BASE_URL}/sessions/checkin',
+        `${process.env.REACT_APP_API_BASE_URL}/sessions/checkin`,
         { bookingId },
         { headers: { Authorization: `Bearer ${token}` } }
       );

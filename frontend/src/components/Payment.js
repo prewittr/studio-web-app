@@ -13,7 +13,7 @@ function Payment() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        '${process.env.REACT_APP_API_BASE_URL}/payments/create-intent',
+        `${process.env.REACT_APP_API_BASE_URL}/payments/create-intent`,
         { amount, currency: 'usd', description: 'Booking payment' },
         { headers: { Authorization: `Bearer ${token}` } }
       );

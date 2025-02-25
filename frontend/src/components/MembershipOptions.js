@@ -9,8 +9,10 @@ import { useShoppingCart } from '../context/ShoppingCartContext';
 import './MembershipOptions.css';
 
 const MembershipOptions = ({ token }) => {
-  const [ setSelectedMembership ] = useState("infinite_heat");
-  const [setMessage] = useState("");
+  // eslint-disable-next-line no-unused-vars
+  const [selectedMembership, setSelectedMembership] = useState("infinite_heat");
+  // eslint-disable-next-line no-unused-vars
+  const [message, setMessage] = useState("");
   //const [setError] = useState("");
   //const navigate = useNavigate();
   const { addItem } = useShoppingCart();
