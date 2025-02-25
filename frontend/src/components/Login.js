@@ -21,6 +21,7 @@ const Login = () => {
     e.preventDefault();
     setError("");
     try {
+      console.log("DEBUG::ENV VAR:",`${process.env.REACT_APP_API_BASE_URL}` )
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/auth/login`,
         credentials

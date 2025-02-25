@@ -35,7 +35,7 @@ const CartPage = () => {
     try {
       const stripe = await stripePromise;
       const response = await axios.post(
-        "${process.env.REACT_APP_API_BASE_URL}/stripe/create-checkout-session",
+        `${process.env.REACT_APP_API_BASE_URL}/stripe/create-checkout-session`,
         {
           cartItems: cartItems, // sending cartItems from context
         },       
