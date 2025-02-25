@@ -3,14 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios"; // Import axios for API calls
-import { loadStripe } from "@stripe/stripe-js"; // Import Stripe.js
+//import axios from "axios"; // Import axios for API calls
+//import { loadStripe } from "@stripe/stripe-js"; // Import Stripe.js
 import { useAuth } from "./AuthContext"; // Import useAuth for token
 import './NavBar.css';
-
-const stripePromise = loadStripe(
-  "pk_test_51NnRCARxXwnAJ8WElLYAnycNsXH91fy3oAk09I5FhoHpmKPlJNPCPjyz0n3s6SVWgRFkTgLa42bNGAdU3cPTAUXp00BNGq2lKF"
-);
 
 
 const NavBar = React.memo(({ onLogout }) => {
@@ -18,7 +14,7 @@ const NavBar = React.memo(({ onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { token } = useAuth(); // Access the token from AuthContext
   const navigate = useNavigate();
-  const { cartItems } = useShoppingCart();
+  //const { cartItems } = useShoppingCart();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

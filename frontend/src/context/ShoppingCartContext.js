@@ -31,9 +31,9 @@ export const ShoppingCartProvider = ({ children, token }) => {
     setCartItems((prevItems) => prevItems.filter(item => item.id !== itemId));
   };
 
-  const clearCart = () => {
+  /*const clearCart = () => {
     setCartItems([]);
-  };
+  };*/
 
   const updateItemCount = (newCount) => {
     setCartItemCount(newCount);

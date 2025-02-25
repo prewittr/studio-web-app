@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { loadStripe } from '@stripe/stripe-js';
-import jwtDecode from "jwt-decode";
+//import axios from 'axios';
+//import { useNavigate } from 'react-router-dom';
+//import { loadStripe } from '@stripe/stripe-js';
+/*import jwtDecode from "jwt-decode";
 import { useContext } from 'react';
-import { AuthContext } from './AuthContext';
+import { AuthContext } from './AuthContext';*/
 import { useShoppingCart } from '../context/ShoppingCartContext';
 import './MembershipOptions.css';
 
-const stripePromise = loadStripe('pk_test_51NnRCARxXwnAJ8WElLYAnycNsXH91fy3oAk09I5FhoHpmKPlJNPCPjyz0n3s6SVWgRFkTgLa42bNGAdU3cPTAUXp00BNGq2lKF');
-
 const MembershipOptions = ({ token }) => {
-  const [selectedMembership, setSelectedMembership] = useState("infinite_heat");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [ setSelectedMembership ] = useState("infinite_heat");
+  const [setMessage] = useState("");
+  //const [setError] = useState("");
+  //const navigate = useNavigate();
   const { addItem } = useShoppingCart();
 
   // New state to manage package quantities.
