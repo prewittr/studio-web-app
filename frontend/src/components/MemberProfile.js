@@ -43,8 +43,8 @@ const MemberProfile = () => {
           lastName: data.lastName || '',
           preferredName: data.preferredName || '',
           contactNumber: data.contactNumber || '',
-          membershipType: data.membershipType || '',
-          membershipStatus: data.membershipStatus || 'Active',
+          //membershipType: data.membershipType || '',
+          //membershipStatus: data.membershipStatus || 'Active',
           street: data.address?.street || '',
           city: data.address?.city || '',
           state: data.address?.state || '',
@@ -126,7 +126,7 @@ const MemberProfile = () => {
 
     // Decode the JWT to get the user ID
     const decodedToken = jwtDecode(token); // Make sure to install jwt-decode: npm install jwt-decode
-    const userId = decodedToken.id; // Assuming your JWT has a "id" field with the user ID
+   // const userId = decodedToken.id; // Assuming your JWT has a "id" field with the user ID
 
     const response = await axios.post('http://localhost:5000/api/stripe/create-portal-session', { userId: decodedToken.id }, {
       headers: {

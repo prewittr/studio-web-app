@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+//import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useShoppingCart } from "../context/ShoppingCartContext";
-import { jwtDecode } from "jwt-decode";
+//import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import { useAuth } from "./AuthContext";
@@ -13,10 +13,10 @@ const stripePromise = loadStripe(
 
 const CartPage = () => {
   const { token } = useAuth();
-  const { cartItems, updateItemQuantity, removeItem, checkout } = useShoppingCart();
+  const { cartItems, updateItemQuantity, removeItem } = useShoppingCart();
   const navigate = useNavigate();
   // State to ensure we only trigger checkout once after token is available
-  const [checkoutInitiated, setCheckoutInitiated] = useState(false);
+  //const [checkoutInitiated, setCheckoutInitiated] = useState(false);
   
   const handleQuantityChange = (itemId, newQuantity) => {
     // Enforce a minimum quantity of 1.

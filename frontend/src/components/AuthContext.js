@@ -36,7 +36,7 @@ useEffect(() => {
     console.log("AuthContext initialized:", initialized, "user:", user, "token:", token);
     // Mark initialization complete, regardless of whether a token was found.
     setInitialized(true);
-  }, []);
+  }, [initialized, token, user]);
 
   
   // Function to update the user and token in state

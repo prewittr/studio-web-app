@@ -20,7 +20,7 @@ import HalotherapyInfo from './components/HalotherapyInfo';
 import RedLightTherapyInfo from './components/RedLightTherapyInfo';
 import MembershipOptions from './components/MembershipOptions';
 import MemberLanding from './components/MemberLanding';
-import MemberCheckIn from './components/MemberCheckIn';
+//import MemberCheckIn from './components/MemberCheckIn';
 import CartPage from './components/CartPage';
 import BookSession from './components/BookSession';
 import StaffDashboard from './components/StaffDashboard';

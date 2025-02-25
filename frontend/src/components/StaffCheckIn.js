@@ -11,7 +11,7 @@ const StaffCheckIn = ({ bookingId, appointmentDate, refreshBookings }) => {
   const allowedCheckInTime = new Date(appt.getTime() - 15 * 60000);
 
   // Do not render the check-in button if it's too early.
-  if (now < now) {
+  if (now < allowedCheckInTime) {
     return null;
   }
 

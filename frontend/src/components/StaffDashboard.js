@@ -30,7 +30,7 @@ const StaffDashboard = () => {
 
   useEffect(() => {
     fetchBookings();
-  }, [token]);
+  }, [token, fetchBookings]);
 
   // Helper to format suite assignment.
   const formatSuiteAssignment = (assignment) => {
@@ -170,7 +170,7 @@ const StaffDashboard = () => {
     const bookingStatus = booking.status.toLowerCase().trim();
 
     // Determine the status timestamp based on the booking status.
-    let statusDatestamp = '';
+    //let statusDatestamp = '';
     let statusTimestamp = '';
     if (bookingStatus === 'booked' && booking.createdAt) {
         statusTimestamp = new Date(booking.createdAt).toLocaleTimeString('en-US', {
