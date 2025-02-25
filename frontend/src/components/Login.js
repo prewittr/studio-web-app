@@ -22,7 +22,7 @@ const Login = () => {
     setError("");
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "${process.env.REACT_APP_API_BASE_URL}/auth/login",
         credentials
       );
       const token = response.data.token;

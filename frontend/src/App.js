@@ -45,7 +45,7 @@ function App() {
     console.log("DEBUG::::useEffect running, token:", token);
     if (token) {
       axios
-        .get("http://localhost:5000/api/profile", {
+        .get("${process.env.REACT_APP_API_BASE_URL}/profile", {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {

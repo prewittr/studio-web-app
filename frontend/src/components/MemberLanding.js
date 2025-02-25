@@ -19,7 +19,7 @@ const MemberLanding = () => {
     console.log("DEBUG::MemberLanding::Token in useEffect (fetchBookings):", token);
     const fetchBookings = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/sessions/myBookings', {
+        const response = await axios.get('${process.env.REACT_APP_API_BASE_URL}/sessions/myBookings', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setBookings(response.data.bookings);
@@ -37,7 +37,7 @@ const MemberLanding = () => {
     console.log("DEBUG::MemberLanding::Token in useEffect (fetchProfile):", token);
     const fetchProfile = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/profile', {
+        const res = await axios.get('${process.env.REACT_APP_API_BASE_URL}/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setProfile(res.data);
@@ -58,7 +58,7 @@ const MemberLanding = () => {
     );
     if (!confirmCancel) return;
     try {
-      const response = await axios.delete(`http://localhost:5000/api/sessions/${bookingId}/cancel`, {
+      const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/sessions/${bookingId}/cancel`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert(response.data.message);

@@ -32,7 +32,7 @@ const MemberProfile = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('jwtToken');
-        const response = await axios.get('http://localhost:5000/api/profile', {
+        const response = await axios.get('${process.env.REACT_APP_API_BASE_URL}/profile', {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = response.data;
@@ -94,7 +94,7 @@ const MemberProfile = () => {
       if (profilePicFile) {
         const formData = new FormData();
         formData.append('file', profilePicFile);
-        const uploadResponse = await axios.post('http://localhost:5000/api/upload', formData, {
+        const uploadResponse = await axios.post('${process.env.REACT_APP_API_BASE_URL}/upload', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -104,7 +104,7 @@ const MemberProfile = () => {
         updatedProfile.profilePicture = uploadResponse.data.url;
       }
 
-      const response = await axios.put('http://localhost:5000/api/profile', updatedProfile, {
+      const response = await axios.put('${process.env.REACT_APP_API_BASE_URL}/profile', updatedProfile, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage(response.data.message || 'Profile updated successfully!');
@@ -128,7 +128,7 @@ const MemberProfile = () => {
     const decodedToken = jwtDecode(token); // Make sure to install jwt-decode: npm install jwt-decode
    // const userId = decodedToken.id; // Assuming your JWT has a "id" field with the user ID
 
-    const response = await axios.post('http://localhost:5000/api/stripe/create-portal-session', { userId: decodedToken.id }, {
+    const response = await axios.post('${process.env.REACT_APP_API_BASE_URL}/stripe/create-portal-session', { userId: decodedToken.id }, {
       headers: {
         Authorization: `Bearer ${token}`
       }

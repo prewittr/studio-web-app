@@ -26,7 +26,7 @@ const StaffEditBooking = () => {
   useEffect(() => {
     const fetchBooking = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/staff/bookings/${id}`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/staff/bookings/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.data.booking) {
@@ -69,8 +69,8 @@ const StaffEditBooking = () => {
         const dateString = `${year}-${month}-${day}`;
         const endpoint =
           sessionType === 'infrared'
-            ? 'http://localhost:5000/api/suites/sauna'
-            : 'http://localhost:5000/api/suites/redlight';
+            ? '${process.env.REACT_APP_API_BASE_URL}/suites/sauna'
+            : '${process.env.REACT_APP_API_BASE_URL}/suites/redlight';
         const response = await axios.get(endpoint, {
           headers: { Authorization: `Bearer ${token}` },
           params: { date: dateString, time: appointmentDate.toISOString() }
@@ -120,7 +120,7 @@ const StaffEditBooking = () => {
     }
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/staff/bookings/${id}`, updates, {
+      const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/staff/bookings/${id}`, updates, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessage(response.data.message || 'Booking updated successfully!');
@@ -141,7 +141,7 @@ const StaffEditBooking = () => {
       return;
     }
     try {
-      const response = await axios.delete(`http://localhost:5000/api/staff/bookings/${id}`, {
+      const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/staff/bookings/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessage(response.data.message || 'Booking cancelled successfully!');

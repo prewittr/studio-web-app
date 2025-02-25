@@ -16,7 +16,7 @@ const SuiteAssignmentPage = () => {
         // Round selectedDateTime to the start of the hour.
         const blockStart = new Date(selectedDateTime);
         blockStart.setMinutes(0, 0, 0);
-        const response = await axios.get('http://localhost:5000/api/assignments/assignments', {
+        const response = await axios.get('${process.env.REACT_APP_API_BASE_URL}/assignments/assignments', {
           headers: { Authorization: `Bearer ${token}` },
           params: { time: blockStart.toISOString() }
         });

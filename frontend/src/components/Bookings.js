@@ -12,7 +12,7 @@ function Bookings() {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/bookings', {
+        const response = await axios.get('${process.env.REACT_APP_API_BASE_URL}/bookings', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setBookings(response.data.bookings);
@@ -28,7 +28,7 @@ function Bookings() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/bookings',
+        '${process.env.REACT_APP_API_BASE_URL}/bookings',
         { appointmentDate },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -17,7 +17,7 @@ const StaffDashboard = () => {
   // Function to fetch bookings from the backend.
   const fetchBookings = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/staff/bookings', {
+      const response = await axios.get('${process.env.REACT_APP_API_BASE_URL}/staff/bookings', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookings(response.data.bookings);
@@ -48,7 +48,7 @@ const StaffDashboard = () => {
     try {
       // Replace the following URL and logic with your actual fee processing endpoint.
       const response = await axios.post(
-        `http://localhost:5000/api/staff/bookings/${bookingId}/apply-fee`,
+        `${process.env.REACT_APP_API_BASE_URL}/staff/bookings/${bookingId}/apply-fee`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

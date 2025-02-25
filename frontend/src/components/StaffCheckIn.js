@@ -18,7 +18,7 @@ const StaffCheckIn = ({ bookingId, appointmentDate, refreshBookings }) => {
   const handleStaffCheckIn = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/staff/bookings/${bookingId}/checkin`,
+        `${process.env.REACT_APP_API_BASE_URL}/staff/bookings/${bookingId}/checkin`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

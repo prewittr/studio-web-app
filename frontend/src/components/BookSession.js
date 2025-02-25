@@ -29,7 +29,7 @@ const BookSession = () => {
         const day = String(selectedDay.getDate()).padStart(2, '0');
         const dateString = `${year}-${month}-${day}`;
         console.log('Fetching availability for date:', dateString, 'and sessionType:', sessionType);
-        const response = await axios.get('http://localhost:5000/api/sessions/availability', {
+        const response = await axios.get('${process.env.REACT_APP_API_BASE_URL}/sessions/availability', {
           headers: { Authorization: `Bearer ${token}` },
           params: { date: dateString, sessionType }
         });
@@ -58,8 +58,8 @@ const BookSession = () => {
         if (!appointmentDate) return;
         const timeParam = appointmentDate.toISOString();
         const endpoint = sessionType === 'infrared'
-          ? 'http://localhost:5000/api/suites/sauna'
-          : 'http://localhost:5000/api/suites/redlight';
+          ? '${process.env.REACT_APP_API_BASE_URL}/suites/sauna'
+          : '${process.env.REACT_APP_API_BASE_URL}/redlight';
         console.log('Fetching suites with date:', dateString, 'time:', timeParam, 'for sessionType:', sessionType);
         const response = await axios.get(endpoint, {
           headers: { Authorization: `Bearer ${token}` },
@@ -103,7 +103,7 @@ const BookSession = () => {
         halotherapy
       };
       const response = await axios.post(
-        'http://localhost:5000/api/sessions/book',
+        '${process.env.REACT_APP_API_BASE_URL}/sessions/book',
         bookingData,
         { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } }
       );
