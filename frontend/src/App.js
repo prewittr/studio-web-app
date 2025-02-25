@@ -2,6 +2,7 @@ import { useAuth } from './components/AuthContext'; // Import useAuth
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+// eslint-disable-next-line no-unused-vars
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import { ShoppingCartProvider } from './context/ShoppingCartContext';

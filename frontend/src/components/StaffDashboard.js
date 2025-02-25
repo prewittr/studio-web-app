@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
@@ -15,7 +15,7 @@ const StaffDashboard = () => {
   const token = localStorage.getItem('jwtToken');
 
   // Function to fetch bookings from the backend.
-  const fetchBookings = async () => {
+  const fetchBookings = useCallback(async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/staff/bookings', {
         headers: { Authorization: `Bearer ${token}` },
@@ -26,7 +26,7 @@ const StaffDashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]); // The dependency array ensures the function is only recreated when the token changes
 
   useEffect(() => {
     fetchBookings();
